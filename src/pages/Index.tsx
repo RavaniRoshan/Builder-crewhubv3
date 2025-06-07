@@ -46,29 +46,38 @@ const Index = () => {
           <div className="flex flex-1 items-center justify-between space-x-2 md:justify-end">
             <nav className="flex items-center space-x-6 text-sm font-medium">
               <a
-                href="#features"
+                href="/features"
                 className="transition-colors hover:text-foreground/80"
               >
                 Features
               </a>
               <a
-                href="#pricing"
+                href="/pricing"
                 className="transition-colors hover:text-foreground/80"
               >
                 Pricing
               </a>
               <a
-                href="#about"
+                href="/about"
                 className="transition-colors hover:text-foreground/80"
               >
                 About
               </a>
             </nav>
             <div className="flex items-center space-x-2">
-              <Button variant="ghost" size="sm">
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => (window.location.href = "/signin")}
+              >
                 Sign In
               </Button>
-              <Button size="sm">Get Started</Button>
+              <Button
+                size="sm"
+                onClick={() => (window.location.href = "/signup")}
+              >
+                Get Started
+              </Button>
             </div>
           </div>
         </div>
@@ -635,22 +644,22 @@ const Index = () => {
               <h3 className="font-semibold mb-4">Product</h3>
               <ul className="space-y-2 text-sm text-muted-foreground">
                 <li>
-                  <a href="#" className="hover:text-foreground">
+                  <a href="/features" className="hover:text-foreground">
                     Features
                   </a>
                 </li>
                 <li>
-                  <a href="#" className="hover:text-foreground">
+                  <a href="/pricing" className="hover:text-foreground">
                     Pricing
                   </a>
                 </li>
                 <li>
-                  <a href="#" className="hover:text-foreground">
+                  <a href="/docs" className="hover:text-foreground">
                     Documentation
                   </a>
                 </li>
                 <li>
-                  <a href="#" className="hover:text-foreground">
+                  <a href="/api" className="hover:text-foreground">
                     API
                   </a>
                 </li>
@@ -661,22 +670,22 @@ const Index = () => {
               <h3 className="font-semibold mb-4">Company</h3>
               <ul className="space-y-2 text-sm text-muted-foreground">
                 <li>
-                  <a href="#" className="hover:text-foreground">
+                  <a href="/about" className="hover:text-foreground">
                     About
                   </a>
                 </li>
                 <li>
-                  <a href="#" className="hover:text-foreground">
+                  <a href="/blog" className="hover:text-foreground">
                     Blog
                   </a>
                 </li>
                 <li>
-                  <a href="#" className="hover:text-foreground">
+                  <a href="/careers" className="hover:text-foreground">
                     Careers
                   </a>
                 </li>
                 <li>
-                  <a href="#" className="hover:text-foreground">
+                  <a href="/contact" className="hover:text-foreground">
                     Contact
                   </a>
                 </li>
@@ -687,22 +696,22 @@ const Index = () => {
               <h3 className="font-semibold mb-4">Support</h3>
               <ul className="space-y-2 text-sm text-muted-foreground">
                 <li>
-                  <a href="#" className="hover:text-foreground">
+                  <a href="/help" className="hover:text-foreground">
                     Help Center
                   </a>
                 </li>
                 <li>
-                  <a href="#" className="hover:text-foreground">
+                  <a href="/community" className="hover:text-foreground">
                     Community
                   </a>
                 </li>
                 <li>
-                  <a href="#" className="hover:text-foreground">
+                  <a href="/status" className="hover:text-foreground">
                     Status
                   </a>
                 </li>
                 <li>
-                  <a href="#" className="hover:text-foreground">
+                  <a href="/security" className="hover:text-foreground">
                     Security
                   </a>
                 </li>
@@ -715,13 +724,13 @@ const Index = () => {
               © 2024 CrewHub. All rights reserved.
             </p>
             <div className="flex items-center space-x-4 text-sm text-muted-foreground">
-              <a href="#" className="hover:text-foreground">
+              <a href="/privacy" className="hover:text-foreground">
                 Privacy
               </a>
-              <a href="#" className="hover:text-foreground">
+              <a href="/terms" className="hover:text-foreground">
                 Terms
               </a>
-              <a href="#" className="hover:text-foreground">
+              <a href="/cookies" className="hover:text-foreground">
                 Cookies
               </a>
             </div>
