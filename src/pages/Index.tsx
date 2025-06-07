@@ -35,9 +35,11 @@ const Index = () => {
       <nav className="border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 sticky top-0 z-50">
         <div className="container flex h-16 items-center">
           <div className="mr-4 flex items-center space-x-2">
-            <div className="flex h-8 w-8 items-center justify-center rounded-md bg-primary">
-              <Bot className="h-5 w-5 text-primary-foreground" />
-            </div>
+            <img
+              src="/crewhub-logo.svg"
+              alt="CrewHub Logo"
+              className="h-10 w-10"
+            />
             <span className="font-bold text-xl">CrewHub</span>
           </div>
           <div className="flex flex-1 items-center justify-between space-x-2 md:justify-end">
@@ -608,9 +610,11 @@ const Index = () => {
           <div className="grid grid-cols-1 gap-8 md:grid-cols-4">
             <div className="space-y-4">
               <div className="flex items-center space-x-2">
-                <div className="flex h-8 w-8 items-center justify-center rounded-md bg-primary">
-                  <Bot className="h-5 w-5 text-primary-foreground" />
-                </div>
+                <img
+                  src="/crewhub-logo.svg"
+                  alt="CrewHub Logo"
+                  className="h-10 w-10"
+                />
                 <span className="font-bold text-xl">CrewHub</span>
               </div>
               <p className="text-sm text-muted-foreground">
