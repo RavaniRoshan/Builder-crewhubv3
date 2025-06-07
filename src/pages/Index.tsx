@@ -6,7 +6,16 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { motion } from "framer-motion";
 import {
   Bot,
   Users,
@@ -77,26 +86,64 @@ const Index = () => {
       <section className="relative overflow-hidden py-24 lg:py-32">
         <div className="container relative">
           <div className="mx-auto max-w-4xl text-center">
-            <Badge className="mb-4" variant="secondary">
-              🚀 Now in Beta - Join the AI Revolution
-            </Badge>
-            <h1 className="text-4xl font-bold tracking-tight sm:text-6xl lg:text-7xl">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+            >
+              <Badge className="mb-4" variant="secondary">
+                🚀 Now in Beta - Join the AI Revolution
+              </Badge>
+            </motion.div>
+
+            <motion.h1
+              className="text-4xl font-bold tracking-tight sm:text-6xl lg:text-7xl"
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, delay: 0.2 }}
+            >
               Orchestrate AI Agents Like Never Before
-            </h1>
-            <p className="mt-6 text-lg leading-8 text-muted-foreground max-w-2xl mx-auto">
+            </motion.h1>
+
+            <motion.p
+              className="mt-6 text-lg leading-8 text-muted-foreground max-w-2xl mx-auto"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.4 }}
+            >
               CrewHub is the comprehensive platform for assembling, configuring,
               and managing teams of specialized AI agents and tools. Build
               complex workflows with seamless AI collaboration.
-            </p>
-            <div className="mt-10 flex items-center justify-center gap-x-6">
-              <Button size="lg" className="h-12 px-8">
+            </motion.p>
+
+            <motion.div
+              className="mt-10 flex items-center justify-center gap-x-6"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.6 }}
+            >
+              <Button
+                size="lg"
+                className="h-12 px-8 hover:scale-105 transition-transform duration-200"
+                onClick={() => (window.location.href = "/dashboard")}
+              >
                 Start Building <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
-              <Button variant="outline" size="lg" className="h-12 px-8">
+              <Button
+                variant="outline"
+                size="lg"
+                className="h-12 px-8 hover:scale-105 transition-transform duration-200"
+              >
                 Watch Demo
               </Button>
-            </div>
-            <div className="mt-8 flex items-center justify-center gap-x-8 text-sm text-muted-foreground">
+            </motion.div>
+
+            <motion.div
+              className="mt-8 flex items-center justify-center gap-x-8 text-sm text-muted-foreground"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.6, delay: 0.8 }}
+            >
               <div className="flex items-center gap-x-2">
                 <CheckCircle className="h-4 w-4 text-green-500" />
                 Free trial available
@@ -105,10 +152,9 @@ const Index = () => {
                 <CheckCircle className="h-4 w-4 text-green-500" />
                 No credit card required
               </div>
-            </div>
+            </motion.div>
           </div>
         </div>
-
         {/* Background gradient */}
         <div className="absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-80">
           <div className="relative left-[calc(50%-11rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 rotate-[30deg] bg-gradient-to-tr from-[#ff80b5] to-[#9089fc] opacity-20 sm:left-[calc(50%-30rem)] sm:w-[72.1875rem]"></div>
@@ -163,96 +209,66 @@ const Index = () => {
 
           <div className="mx-auto mt-16 max-w-7xl">
             <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
-              <Card className="border-2 hover:border-primary/50 transition-colors">
-                <CardHeader>
-                  <div className="flex items-center space-x-2">
-                    <div className="flex h-10 w-10 items-center justify-center rounded-md bg-primary/10">
-                      <Bot className="h-5 w-5 text-primary" />
-                    </div>
-                    <CardTitle>AI Agent Management</CardTitle>
-                  </div>
-                  <CardDescription>
-                    Integrate and configure multiple AI models including Claude,
-                    ChatGPT, Gemini, and more with specialized profiles and
-                    settings.
-                  </CardDescription>
-                </CardHeader>
-              </Card>
-
-              <Card className="border-2 hover:border-primary/50 transition-colors">
-                <CardHeader>
-                  <div className="flex items-center space-x-2">
-                    <div className="flex h-10 w-10 items-center justify-center rounded-md bg-primary/10">
-                      <Workflow className="h-5 w-5 text-primary" />
-                    </div>
-                    <CardTitle>Visual Workflow Builder</CardTitle>
-                  </div>
-                  <CardDescription>
-                    Create complex workflows with our drag-and-drop interface.
-                    Connect agents, tools, and data sources with ease.
-                  </CardDescription>
-                </CardHeader>
-              </Card>
-
-              <Card className="border-2 hover:border-primary/50 transition-colors">
-                <CardHeader>
-                  <div className="flex items-center space-x-2">
-                    <div className="flex h-10 w-10 items-center justify-center rounded-md bg-primary/10">
-                      <Users className="h-5 w-5 text-primary" />
-                    </div>
-                    <CardTitle>Team Collaboration</CardTitle>
-                  </div>
-                  <CardDescription>
-                    Work together in real-time with your team. Share workflows,
-                    collaborate on projects, and track progress seamlessly.
-                  </CardDescription>
-                </CardHeader>
-              </Card>
-
-              <Card className="border-2 hover:border-primary/50 transition-colors">
-                <CardHeader>
-                  <div className="flex items-center space-x-2">
-                    <div className="flex h-10 w-10 items-center justify-center rounded-md bg-primary/10">
-                      <Zap className="h-5 w-5 text-primary" />
-                    </div>
-                    <CardTitle>Tool Integration</CardTitle>
-                  </div>
-                  <CardDescription>
-                    Connect external tools and APIs. Chain outputs between tools
-                    and agents for powerful automation workflows.
-                  </CardDescription>
-                </CardHeader>
-              </Card>
-
-              <Card className="border-2 hover:border-primary/50 transition-colors">
-                <CardHeader>
-                  <div className="flex items-center space-x-2">
-                    <div className="flex h-10 w-10 items-center justify-center rounded-md bg-primary/10">
-                      <BarChart3 className="h-5 w-5 text-primary" />
-                    </div>
-                    <CardTitle>Analytics & Monitoring</CardTitle>
-                  </div>
-                  <CardDescription>
-                    Track performance, costs, and usage across all your AI
-                    agents. Optimize workflows with detailed insights.
-                  </CardDescription>
-                </CardHeader>
-              </Card>
-
-              <Card className="border-2 hover:border-primary/50 transition-colors">
-                <CardHeader>
-                  <div className="flex items-center space-x-2">
-                    <div className="flex h-10 w-10 items-center justify-center rounded-md bg-primary/10">
-                      <Target className="h-5 w-5 text-primary" />
-                    </div>
-                    <CardTitle>Smart Recommendations</CardTitle>
-                  </div>
-                  <CardDescription>
-                    AI-powered suggestions for optimal agent selection, workflow
-                    improvements, and tool recommendations.
-                  </CardDescription>
-                </CardHeader>
-              </Card>
+              {[
+                {
+                  icon: Bot,
+                  title: "AI Agent Management",
+                  description:
+                    "Integrate and configure multiple AI models including Claude, ChatGPT, Gemini, and more with specialized profiles and settings.",
+                },
+                {
+                  icon: Workflow,
+                  title: "Visual Workflow Builder",
+                  description:
+                    "Create complex workflows with our drag-and-drop interface. Connect agents, tools, and data sources with ease.",
+                },
+                {
+                  icon: Users,
+                  title: "Team Collaboration",
+                  description:
+                    "Work together in real-time with your team. Share workflows, collaborate on projects, and track progress seamlessly.",
+                },
+                {
+                  icon: Zap,
+                  title: "Tool Integration",
+                  description:
+                    "Connect external tools and APIs. Chain outputs between tools and agents for powerful automation workflows.",
+                },
+                {
+                  icon: BarChart3,
+                  title: "Analytics & Monitoring",
+                  description:
+                    "Track performance, costs, and usage across all your AI agents. Optimize workflows with detailed insights.",
+                },
+                {
+                  icon: Target,
+                  title: "Smart Recommendations",
+                  description:
+                    "AI-powered suggestions for optimal agent selection, workflow improvements, and tool recommendations.",
+                },
+              ].map((feature, index) => (
+                <motion.div
+                  key={feature.title}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: index * 0.1 }}
+                  viewport={{ once: true }}
+                >
+                  <Card className="border-2 hover:border-primary/50 hover:shadow-lg hover:scale-105 transition-all duration-300 cursor-pointer group">
+                    <CardHeader>
+                      <div className="flex items-center space-x-2">
+                        <div className="flex h-10 w-10 items-center justify-center rounded-md bg-primary/10 group-hover:bg-primary/20 transition-colors">
+                          <feature.icon className="h-5 w-5 text-primary group-hover:scale-110 transition-transform" />
+                        </div>
+                        <CardTitle className="group-hover:text-primary transition-colors">
+                          {feature.title}
+                        </CardTitle>
+                      </div>
+                      <CardDescription>{feature.description}</CardDescription>
+                    </CardHeader>
+                  </Card>
+                </motion.div>
+              ))}
             </div>
           </div>
         </div>
