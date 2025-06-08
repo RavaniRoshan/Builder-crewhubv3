@@ -6,8 +6,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { motion } from "framer-motion";
 import { ThemeSwitch } from "@/components/theme-switch";
@@ -109,7 +107,7 @@ const About = () => {
                 Home
               </a>
               <a
-                href="#features"
+                href="/features"
                 className="transition-colors hover:text-foreground/80"
               >
                 Features
@@ -128,6 +126,7 @@ const About = () => {
               </a>
             </nav>
             <div className="flex items-center space-x-2">
+              <ThemeSwitch />
               <Button
                 variant="ghost"
                 size="sm"
@@ -371,7 +370,7 @@ const About = () => {
               <h3 className="font-semibold mb-4">Product</h3>
               <ul className="space-y-2 text-sm text-muted-foreground">
                 <li>
-                  <a href="/" className="hover:text-foreground">
+                  <a href="/features" className="hover:text-foreground">
                     Features
                   </a>
                 </li>
@@ -450,15 +449,10 @@ const About = () => {
             <p className="text-sm text-muted-foreground">
               © 2024 CrewHub. All rights reserved.
             </p>
-            <div className="flex items-center space-x-2">
-              <ThemeSwitch />
-              <Button variant="ghost" size="sm" onClick={() => window.location.href = '/signin'}>
-                Sign In
-              </Button>
-              <Button size="sm" onClick={() => window.location.href = '/signup'}>
-                Get Started
-              </Button>
-            </div>
+            <div className="flex items-center space-x-4 text-sm text-muted-foreground">
+              <a href="/privacy" className="hover:text-foreground">
+                Privacy
+              </a>
               <a href="/terms" className="hover:text-foreground">
                 Terms
               </a>
