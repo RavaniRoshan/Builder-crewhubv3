@@ -8,6 +8,7 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { ThemeSwitch } from "@/components/theme-switch";
 import {
   Select,
   SelectContent,
