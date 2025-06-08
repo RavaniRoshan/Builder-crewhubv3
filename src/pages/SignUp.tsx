@@ -6,10 +6,19 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { motion } from "framer-motion";
+import { ThemeSwitch } from "@/components/theme-switch";
 import { ArrowRight, Mail, Lock, User, Building } from "lucide-react";
 import { useState } from "react";
 
@@ -57,6 +66,9 @@ const SignUp = () => {
               className="h-10 w-10 rounded-full"
             />
             <span className="font-bold text-2xl">CrewHub</span>
+            <div className="ml-4">
+              <ThemeSwitch />
+            </div>
           </div>
           <h1 className="text-3xl font-bold text-gray-900">
             Create your account

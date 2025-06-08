@@ -101,6 +101,52 @@ const WorkflowBuilder = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      {/* Navigation */}
+      <nav className="border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 sticky top-0 z-50">
+        <div className="container flex h-16 items-center">
+          <div className="mr-4 flex items-center space-x-2">
+            <img
+              src="/crewhub-logo.png"
+              alt="CrewHub Logo"
+              className="h-10 w-10 rounded-full"
+            />
+            <span className="font-bold text-xl">CrewHub</span>
+          </div>
+          <div className="flex flex-1 items-center justify-between space-x-2 md:justify-end">
+            <nav className="flex items-center space-x-6 text-sm font-medium">
+              <a
+                href="/dashboard"
+                className="transition-colors hover:text-foreground/80"
+              >
+                Dashboard
+              </a>
+              <a
+                href="/agents"
+                className="transition-colors hover:text-foreground/80"
+              >
+                Agents
+              </a>
+              <a
+                href="/workflows"
+                className="transition-colors hover:text-foreground/80 text-foreground"
+              >
+                Workflows
+              </a>
+            </nav>
+            <div className="flex items-center space-x-2">
+              <ThemeSwitch />
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => (window.location.href = "/signin")}
+              >
+                Sign In
+              </Button>
+            </div>
+          </div>
+        </div>
+      </nav>
+
       {/* Header */}
       <div className="border-b bg-muted/30 p-6">
         <div className="max-w-4xl mx-auto">
