@@ -31,6 +31,7 @@ import {
   Search,
   Edit,
   Trash2,
+  LogOut,
 } from "lucide-react";
 import { motion } from "framer-motion";
 import { useAuth } from "@/contexts/AuthContext";
@@ -38,9 +39,11 @@ import { useEffect, useState } from "react";
 import { ProjectService } from "@/lib/api/projects";
 import { type Project } from "@/lib/db/schema";
 import { toast } from "sonner";
+import { useNavigate } from "react-router-dom";
 
 const Dashboard = () => {
   const { user, signOut } = useAuth();
+  const navigate = useNavigate();
   const [projects, setProjects] = useState<Project[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
@@ -51,7 +54,9 @@ const Dashboard = () => {
   });
 
   useEffect(() => {
-    loadProjects();
+    if (user) {
+      loadProjects();
+    }
   }, [user]);
 
   const loadProjects = async () => {
@@ -73,11 +78,16 @@ const Dashboard = () => {
     e.preventDefault();
     if (!user) return;
 
+    if (!formData.title.trim()) {
+      toast.error("Project title is required");
+      return;
+    }
+
     try {
       const newProject = await ProjectService.createProject({
         userId: user.id,
-        title: formData.title,
-        description: formData.description,
+        title: formData.title.trim(),
+        description: formData.description.trim() || null,
         status: "active",
       });
       
@@ -95,10 +105,15 @@ const Dashboard = () => {
     e.preventDefault();
     if (!editingProject) return;
 
+    if (!formData.title.trim()) {
+      toast.error("Project title is required");
+      return;
+    }
+
     try {
       const updatedProject = await ProjectService.updateProject(editingProject.id, {
-        title: formData.title,
-        description: formData.description,
+        title: formData.title.trim(),
+        description: formData.description.trim() || null,
       });
       
       setProjects(projects.map(p => p.id === updatedProject.id ? updatedProject : p));
@@ -112,7 +127,7 @@ const Dashboard = () => {
   };
 
   const handleDeleteProject = async (projectId: string) => {
-    if (!confirm("Are you sure you want to delete this project?")) return;
+    if (!confirm("Are you sure you want to delete this project? This action cannot be undone.")) return;
 
     try {
       await ProjectService.deleteProject(projectId);
@@ -137,6 +152,12 @@ const Dashboard = () => {
     setFormData({ title: "", description: "" });
   };
 
+  const handleSignOut = () => {
+    signOut();
+    navigate("/");
+    toast.success("Signed out successfully!");
+  };
+
   const getInitials = (firstName: string, lastName: string) => {
     return `${firstName.charAt(0)}${lastName.charAt(0)}`.toUpperCase();
   };
@@ -149,6 +170,14 @@ const Dashboard = () => {
     if (diffInHours < 24) return `${diffInHours} hours ago`;
     if (diffInHours < 48) return "1 day ago";
     return `${Math.floor(diffInHours / 24)} days ago`;
+  };
+
+  const navigateToAgents = () => {
+    navigate("/agents");
+  };
+
+  const navigateToWorkflows = () => {
+    navigate("/workflows");
   };
 
   return (
@@ -192,7 +221,8 @@ const Dashboard = () => {
                 <p className="text-sm font-medium">{user?.firstName} {user?.lastName}</p>
                 <p className="text-xs text-muted-foreground">{user?.email}</p>
               </div>
-              <Button variant="ghost" size="sm" onClick={signOut}>
+              <Button variant="ghost" size="sm" onClick={handleSignOut}>
+                <LogOut className="h-4 w-4 mr-2" />
                 Sign Out
               </Button>
             </div>
@@ -215,7 +245,7 @@ const Dashboard = () => {
               <Button 
                 variant="ghost" 
                 className="w-full justify-start"
-                onClick={() => window.location.href = "/agents"}
+                onClick={navigateToAgents}
               >
                 <Bot className="mr-2 h-4 w-4" />
                 Agents
@@ -226,7 +256,7 @@ const Dashboard = () => {
               <Button 
                 variant="ghost" 
                 className="w-full justify-start"
-                onClick={() => window.location.href = "/workflows"}
+                onClick={navigateToWorkflows}
               >
                 <Workflow className="mr-2 h-4 w-4" />
                 Workflows
@@ -270,7 +300,7 @@ const Dashboard = () => {
                 </DialogHeader>
                 <form onSubmit={handleCreateProject} className="space-y-4">
                   <div className="space-y-2">
-                    <Label htmlFor="title">Project Title</Label>
+                    <Label htmlFor="title">Project Title *</Label>
                     <Input
                       id="title"
                       placeholder="Enter project title..."
@@ -304,9 +334,9 @@ const Dashboard = () => {
           <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
             {[
               { title: "Total Projects", value: projects.length.toString(), icon: FolderOpen },
-              { title: "Active Agents", value: "28", icon: Bot },
-              { title: "Running Workflows", value: "45", icon: Workflow },
-              { title: "Team Members", value: "8", icon: Users },
+              { title: "Active Agents", value: "0", icon: Bot },
+              { title: "Running Workflows", value: "0", icon: Workflow },
+              { title: "Team Members", value: "1", icon: Users },
             ].map((stat, index) => (
               <motion.div
                 key={stat.title}
@@ -392,8 +422,8 @@ const Dashboard = () => {
                     </CardHeader>
                     <CardContent>
                       <div className="flex justify-between text-sm text-muted-foreground">
-                        <span>{project.agentsCount} agents</span>
-                        <span>{project.workflowsCount} workflows</span>
+                        <span>{project.agentsCount || 0} agents</span>
+                        <span>{project.workflowsCount || 0} workflows</span>
                       </div>
                     </CardContent>
                   </Card>
@@ -435,7 +465,7 @@ const Dashboard = () => {
               </DialogHeader>
               <form onSubmit={handleEditProject} className="space-y-4">
                 <div className="space-y-2">
-                  <Label htmlFor="edit-title">Project Title</Label>
+                  <Label htmlFor="edit-title">Project Title *</Label>
                   <Input
                     id="edit-title"
                     placeholder="Enter project title..."

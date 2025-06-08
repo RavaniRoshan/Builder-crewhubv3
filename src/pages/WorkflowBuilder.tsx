@@ -27,35 +27,45 @@ import {
   Settings,
   ChevronUp,
   ChevronDown,
+  ArrowLeft,
 } from "lucide-react";
 import { motion } from "framer-motion";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { WorkflowService } from "@/lib/api/workflows";
+import { ProjectService } from "@/lib/api/projects";
+import { useAuth } from "@/contexts/AuthContext";
+import { toast } from "sonner";
+import { type Workflow, type Project } from "@/lib/db/schema";
+
+interface WorkflowStep {
+  id: number;
+  agent: string;
+  task: string;
+  expanded: boolean;
+}
+
+interface WorkflowData {
+  name: string;
+  description: string;
+  steps: WorkflowStep[];
+}
 
 const WorkflowBuilder = () => {
-  const [workflow, setWorkflow] = useState({
-    name: "Content Generation Pipeline",
-    description: "Automated workflow for creating and optimizing blog content",
-    steps: [
-      {
-        id: 1,
-        agent: "ChatGPT-4",
-        task: "Generate blog post outline based on topic and keywords",
-        expanded: true,
-      },
-      {
-        id: 2,
-        agent: "Claude 3.5",
-        task: "Write detailed blog post content from the outline",
-        expanded: false,
-      },
-      {
-        id: 3,
-        agent: "Content Optimizer",
-        task: "Optimize content for SEO and readability",
-        expanded: false,
-      },
-    ],
+  const { user } = useAuth();
+  const navigate = useNavigate();
+  const { projectId, workflowId } = useParams();
+  
+  const [workflow, setWorkflow] = useState<WorkflowData>({
+    name: "",
+    description: "",
+    steps: [],
   });
+  
+  const [currentProject, setCurrentProject] = useState<Project | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
+  const [isNewWorkflow, setIsNewWorkflow] = useState(true);
 
   const availableAgents = [
     { value: "chatgpt-4", label: "ChatGPT-4", provider: "OpenAI" },
@@ -69,8 +79,145 @@ const WorkflowBuilder = () => {
     { value: "code-assistant", label: "Code Assistant", provider: "GitHub" },
   ];
 
+  useEffect(() => {
+    if (projectId) {
+      loadProject();
+    }
+    if (workflowId) {
+      loadWorkflow();
+    } else {
+      // Initialize with a default step for new workflows
+      setWorkflow({
+        name: "New Workflow",
+        description: "",
+        steps: [
+          {
+            id: 1,
+            agent: "",
+            task: "",
+            expanded: true,
+          },
+        ],
+      });
+    }
+  }, [projectId, workflowId]);
+
+  const loadProject = async () => {
+    if (!projectId) return;
+    
+    try {
+      const project = await ProjectService.getProjectById(projectId);
+      if (project) {
+        setCurrentProject(project);
+      } else {
+        toast.error("Project not found");
+        navigate("/dashboard");
+      }
+    } catch (error) {
+      toast.error("Failed to load project");
+      console.error("Error loading project:", error);
+    }
+  };
+
+  const loadWorkflow = async () => {
+    if (!workflowId) return;
+    
+    try {
+      setIsLoading(true);
+      const workflowData = await WorkflowService.getWorkflowById(workflowId);
+      if (workflowData) {
+        setIsNewWorkflow(false);
+        // Convert the stored steps back to the UI format
+        const steps = Array.isArray(workflowData.steps) 
+          ? (workflowData.steps as any[]).map((step, index) => ({
+              id: index + 1,
+              agent: step.agent || "",
+              task: step.task || "",
+              expanded: false,
+            }))
+          : [];
+        
+        setWorkflow({
+          name: workflowData.name,
+          description: workflowData.description || "",
+          steps: steps.length > 0 ? steps : [{ id: 1, agent: "", task: "", expanded: true }],
+        });
+      } else {
+        toast.error("Workflow not found");
+        navigate("/dashboard");
+      }
+    } catch (error) {
+      toast.error("Failed to load workflow");
+      console.error("Error loading workflow:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleSaveWorkflow = async () => {
+    if (!user || !projectId) {
+      toast.error("Missing required information");
+      return;
+    }
+
+    if (!workflow.name.trim()) {
+      toast.error("Workflow name is required");
+      return;
+    }
+
+    if (workflow.steps.length === 0) {
+      toast.error("At least one step is required");
+      return;
+    }
+
+    // Validate that all steps have required fields
+    const invalidSteps = workflow.steps.filter(step => !step.agent || !step.task.trim());
+    if (invalidSteps.length > 0) {
+      toast.error("All steps must have an agent and task description");
+      return;
+    }
+
+    try {
+      setIsSaving(true);
+      
+      // Convert steps to the format expected by the database
+      const stepsData = workflow.steps.map(step => ({
+        agent: step.agent,
+        task: step.task.trim(),
+      }));
+
+      if (isNewWorkflow) {
+        const newWorkflow = await WorkflowService.createWorkflow({
+          projectId: projectId,
+          name: workflow.name.trim(),
+          description: workflow.description.trim() || null,
+          steps: stepsData,
+        });
+        
+        setIsNewWorkflow(false);
+        toast.success("Workflow created successfully!");
+        
+        // Update URL to include the new workflow ID
+        navigate(`/workflows/${projectId}/${newWorkflow.id}`, { replace: true });
+      } else if (workflowId) {
+        await WorkflowService.updateWorkflow(workflowId, {
+          name: workflow.name.trim(),
+          description: workflow.description.trim() || null,
+          steps: stepsData,
+        });
+        
+        toast.success("Workflow updated successfully!");
+      }
+    } catch (error) {
+      toast.error("Failed to save workflow");
+      console.error("Error saving workflow:", error);
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
   const addStep = () => {
-    const newStep = {
+    const newStep: WorkflowStep = {
       id: workflow.steps.length + 1,
       agent: "",
       task: "",
@@ -83,9 +230,23 @@ const WorkflowBuilder = () => {
   };
 
   const removeStep = (stepId: number) => {
+    if (workflow.steps.length <= 1) {
+      toast.error("At least one step is required");
+      return;
+    }
+    
     setWorkflow({
       ...workflow,
       steps: workflow.steps.filter((step) => step.id !== stepId),
+    });
+  };
+
+  const updateStep = (stepId: number, field: keyof WorkflowStep, value: any) => {
+    setWorkflow({
+      ...workflow,
+      steps: workflow.steps.map((step) =>
+        step.id === stepId ? { ...step, [field]: value } : step
+      ),
     });
   };
 
@@ -93,10 +254,26 @@ const WorkflowBuilder = () => {
     setWorkflow({
       ...workflow,
       steps: workflow.steps.map((step) =>
-        step.id === stepId ? { ...step, expanded: !step.expanded } : step,
+        step.id === stepId ? { ...step, expanded: !step.expanded } : step
       ),
     });
   };
+
+  const handleTestRun = () => {
+    toast.info("Test run functionality coming soon!");
+  };
+
+  const handleBack = () => {
+    navigate("/dashboard");
+  };
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-primary"></div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-background">
@@ -104,24 +281,26 @@ const WorkflowBuilder = () => {
       <div className="border-b bg-muted/30 p-6">
         <div className="max-w-4xl mx-auto">
           <div className="flex items-center justify-between mb-6">
-            <div>
-              <h1 className="text-3xl font-bold">Workflow Builder</h1>
-              <p className="text-muted-foreground">
-                Create and configure AI agent workflows
-              </p>
+            <div className="flex items-center space-x-4">
+              <Button variant="ghost" size="sm" onClick={handleBack}>
+                <ArrowLeft className="mr-2 h-4 w-4" />
+                Back to Dashboard
+              </Button>
+              <div>
+                <h1 className="text-3xl font-bold">Workflow Builder</h1>
+                <p className="text-muted-foreground">
+                  {currentProject ? `Project: ${currentProject.title}` : "Create and configure AI agent workflows"}
+                </p>
+              </div>
             </div>
             <div className="flex gap-2">
-              <Button variant="outline">
-                <Settings className="mr-2 h-4 w-4" />
-                Settings
-              </Button>
-              <Button variant="outline">
+              <Button variant="outline" onClick={handleTestRun}>
                 <Play className="mr-2 h-4 w-4" />
                 Test Run
               </Button>
-              <Button>
+              <Button onClick={handleSaveWorkflow} disabled={isSaving}>
                 <Save className="mr-2 h-4 w-4" />
-                Save Workflow
+                {isSaving ? "Saving..." : "Save Workflow"}
               </Button>
             </div>
           </div>
@@ -130,7 +309,7 @@ const WorkflowBuilder = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <label className="text-sm font-medium mb-2 block">
-                Workflow Name
+                Workflow Name *
               </label>
               <Input
                 value={workflow.name}
@@ -200,6 +379,7 @@ const WorkflowBuilder = () => {
                         variant="ghost"
                         size="sm"
                         onClick={() => removeStep(step.id)}
+                        disabled={workflow.steps.length <= 1}
                       >
                         <Trash2 className="h-4 w-4" />
                       </Button>
@@ -211,9 +391,12 @@ const WorkflowBuilder = () => {
                   <CardContent className="space-y-4">
                     <div>
                       <label className="text-sm font-medium mb-2 block">
-                        Select Agent
+                        Select Agent *
                       </label>
-                      <Select value={step.agent}>
+                      <Select 
+                        value={step.agent} 
+                        onValueChange={(value) => updateStep(step.id, 'agent', value)}
+                      >
                         <SelectTrigger>
                           <SelectValue placeholder="Choose an AI agent..." />
                         </SelectTrigger>
@@ -237,10 +420,11 @@ const WorkflowBuilder = () => {
 
                     <div>
                       <label className="text-sm font-medium mb-2 block">
-                        Task Description
+                        Task Description *
                       </label>
                       <Textarea
                         value={step.task}
+                        onChange={(e) => updateStep(step.id, 'task', e.target.value)}
                         placeholder="Describe what this agent should do..."
                         rows={3}
                       />
@@ -249,7 +433,10 @@ const WorkflowBuilder = () => {
                     <div className="flex items-center gap-2 pt-2">
                       <Bot className="h-4 w-4 text-muted-foreground" />
                       <span className="text-sm text-muted-foreground">
-                        This step will receive input from the previous step
+                        {index === 0 
+                          ? "This is the first step in your workflow"
+                          : "This step will receive input from the previous step"
+                        }
                       </span>
                     </div>
                   </CardContent>
@@ -287,13 +474,13 @@ const WorkflowBuilder = () => {
 
         {/* Bottom Actions */}
         <div className="flex justify-center gap-4 mt-8 pt-6 border-t">
-          <Button variant="outline" size="lg">
+          <Button variant="outline" size="lg" onClick={handleTestRun}>
             <Play className="mr-2 h-4 w-4" />
-            Run Workflow
+            Test Workflow
           </Button>
-          <Button size="lg">
+          <Button size="lg" onClick={handleSaveWorkflow} disabled={isSaving}>
             <Save className="mr-2 h-4 w-4" />
-            Save Workflow
+            {isSaving ? "Saving..." : "Save Workflow"}
           </Button>
         </div>
       </div>
