@@ -6,8 +6,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { motion } from "framer-motion";
 import { ThemeSwitch } from "@/components/theme-switch";
@@ -145,6 +143,7 @@ const Help = () => {
               </a>
             </nav>
             <div className="flex items-center space-x-2">
+              <ThemeSwitch />
               <Button
                 variant="ghost"
                 size="sm"
@@ -295,15 +294,10 @@ const Help = () => {
                 >
                   <Card className="h-full hover:shadow-lg transition-shadow">
                     <CardHeader>
-            <div className="flex items-center space-x-2">
-              <ThemeSwitch />
-              <Button variant="ghost" size="sm" onClick={() => window.location.href = '/signin'}>
-                Sign In
-              </Button>
-              <Button size="sm" onClick={() => window.location.href = '/signup'}>
-                Get Started
-              </Button>
-            </div>
+                      <div className="flex items-center space-x-2">
+                        <div className="flex h-10 w-10 items-center justify-center rounded-md bg-primary/10">
+                          <category.icon className="h-5 w-5 text-primary" />
+                        </div>
                         <div>
                           <CardTitle>{category.title}</CardTitle>
                           <CardDescription>
