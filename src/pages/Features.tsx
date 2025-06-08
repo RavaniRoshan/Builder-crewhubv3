@@ -6,8 +6,17 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { motion } from "framer-motion";
+import { ThemeSwitch } from "@/components/theme-switch";
 import {
   Bot,
   Users,
@@ -265,9 +274,21 @@ const Features = () => {
                     and create sophisticated automation pipelines.
                   </p>
                   <div className="space-y-3">
-                    <div className="flex items-center gap-2">
-                      <CheckCircle className="h-5 w-5 text-green-500" />
-                      <span>Drag-and-drop workflow design</span>
+                    <div className="flex items-center space-x-2">
+                      <ThemeSwitch />
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => (window.location.href = "/signin")}
+                      >
+                        Sign In
+                      </Button>
+                      <Button
+                        size="sm"
+                        onClick={() => (window.location.href = "/signup")}
+                      >
+                        Get Started
+                      </Button>
                     </div>
                     <div className="flex items-center gap-2">
                       <CheckCircle className="h-5 w-5 text-green-500" />

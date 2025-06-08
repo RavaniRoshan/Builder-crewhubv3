@@ -8,6 +8,7 @@ import {
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { ThemeSwitch } from "@/components/theme-switch";
 import {
   Bot,
   Users,
@@ -78,6 +79,7 @@ const Dashboard = () => {
 
           {/* Right side */}
           <div className="flex items-center space-x-4 ml-auto">
+            <ThemeSwitch />
             <Button variant="ghost" size="sm">
               <Bell className="h-4 w-4" />
             </Button>

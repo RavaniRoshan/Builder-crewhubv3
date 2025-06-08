@@ -8,6 +8,7 @@ import {
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { motion } from "framer-motion";
+import { ThemeSwitch } from "@/components/theme-switch";
 import {
   Bot,
   Users,
@@ -606,12 +607,20 @@ const Index = () => {
               Join thousands of teams already using CrewHub to build the future
               with AI.
             </p>
-            <div className="mt-8 flex items-center justify-center gap-x-6">
-              <Button size="lg" className="h-12 px-8">
-                Start Your Free Trial <ArrowRight className="ml-2 h-4 w-4" />
+            <div className="flex items-center space-x-2">
+              <ThemeSwitch />
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => (window.location.href = "/signin")}
+              >
+                Sign In
               </Button>
-              <Button variant="outline" size="lg" className="h-12 px-8">
-                Schedule Demo
+              <Button
+                size="sm"
+                onClick={() => (window.location.href = "/signup")}
+              >
+                Get Started
               </Button>
             </div>
             <p className="mt-4 text-sm text-muted-foreground">

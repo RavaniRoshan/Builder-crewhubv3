@@ -6,10 +6,13 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { motion } from "framer-motion";
+import { ThemeSwitch } from "@/components/theme-switch";
 import { Mail, Phone, MapPin, Clock, Send } from "lucide-react";
 import { useState } from "react";
 
@@ -125,10 +128,15 @@ const Contact = () => {
                     Contact Information
                   </h2>
                   <div className="space-y-6">
-                    <div className="flex items-center space-x-4">
-                      <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10">
-                        <Mail className="h-6 w-6 text-primary" />
-                      </div>
+            <div className="flex items-center space-x-2">
+              <ThemeSwitch />
+              <Button variant="ghost" size="sm" onClick={() => window.location.href = '/signin'}>
+                Sign In
+              </Button>
+              <Button size="sm" onClick={() => window.location.href = '/signup'}>
+                Get Started
+              </Button>
+            </div>
                       <div>
                         <p className="font-medium">Email</p>
                         <p className="text-muted-foreground">

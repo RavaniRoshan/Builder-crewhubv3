@@ -6,8 +6,11 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { motion } from "framer-motion";
+import { ThemeSwitch } from "@/components/theme-switch";
 import {
   Target,
   Users,
@@ -447,10 +450,15 @@ const About = () => {
             <p className="text-sm text-muted-foreground">
               © 2024 CrewHub. All rights reserved.
             </p>
-            <div className="flex items-center space-x-4 text-sm text-muted-foreground">
-              <a href="/privacy" className="hover:text-foreground">
-                Privacy
-              </a>
+            <div className="flex items-center space-x-2">
+              <ThemeSwitch />
+              <Button variant="ghost" size="sm" onClick={() => window.location.href = '/signin'}>
+                Sign In
+              </Button>
+              <Button size="sm" onClick={() => window.location.href = '/signup'}>
+                Get Started
+              </Button>
+            </div>
               <a href="/terms" className="hover:text-foreground">
                 Terms
               </a>

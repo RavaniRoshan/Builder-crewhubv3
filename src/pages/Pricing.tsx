@@ -6,8 +6,11 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { motion } from "framer-motion";
+import { ThemeSwitch } from "@/components/theme-switch";
 import { CheckCircle, ArrowRight, Zap, Building, Users } from "lucide-react";
 
 const Pricing = () => {
@@ -254,10 +257,15 @@ const Pricing = () => {
       <section className="py-24 bg-muted/50">
         <div className="container">
           <div className="mx-auto max-w-4xl">
-            <div className="text-center mb-12">
-              <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
-                Compare Plans
-              </h2>
+            <div className="flex items-center space-x-2">
+              <ThemeSwitch />
+              <Button variant="ghost" size="sm" onClick={() => window.location.href = '/signin'}>
+                Sign In
+              </Button>
+              <Button size="sm" onClick={() => window.location.href = '/signup'}>
+                Get Started
+              </Button>
+            </div>
               <p className="mt-4 text-lg text-muted-foreground">
                 See what's included in each plan
               </p>
