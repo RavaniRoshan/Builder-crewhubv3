@@ -28,7 +28,7 @@ const queryClient = new QueryClient();
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
-    <ThemeProvider defaultTheme="light" storageKey="crewhub-ui-theme">
+    <ThemeProvider defaultTheme="dark" storageKey="crewhub-ui-theme">
       <TooltipProvider>
         <Toaster />
         <Sonner />
