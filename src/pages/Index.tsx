@@ -236,8 +236,8 @@ const Index = () => {
             trigger: containerRef.current,
             start: "100px top",
             end: "300px top",
-            scrub: 1
-          }
+            scrub: 1,
+          },
         });
 
         // Dynamic floating movement - more pronounced
@@ -258,8 +258,8 @@ const Index = () => {
                 y: -15 + floatY,
                 rotationX: 2 + Math.sin(progress * Math.PI * 2) * 1,
               });
-            }
-          }
+            },
+          },
         });
 
         // Additional micro-movement for continuous floating feel
@@ -268,7 +268,7 @@ const Index = () => {
           duration: 3,
           ease: "sine.inOut",
           repeat: -1,
-          yoyo: true
+          yoyo: true,
         });
 
         // Shadow intensity based on scroll
@@ -278,10 +278,9 @@ const Index = () => {
             trigger: containerRef.current,
             start: "200px top",
             end: "400px top",
-            scrub: 1
-          }
+            scrub: 1,
+          },
         });
-      }
       }
 
       // Parallax background elements
@@ -458,8 +457,8 @@ const Index = () => {
           ref={navRef}
           className="fixed top-6 left-6 right-6 z-50 backdrop-blur-2xl bg-black/50 border border-white/30 rounded-2xl shadow-2xl transition-all duration-500"
           style={{
-            willChange: 'transform, background-color, border-color, box-shadow',
-            transformStyle: 'preserve-3d'
+            willChange: "transform, background-color, border-color, box-shadow",
+            transformStyle: "preserve-3d",
           }}
         >
           <div className="container flex h-20 items-center justify-between px-8">
@@ -853,7 +852,7 @@ const Index = () => {
             </div>
 
             <p className="text-lg text-white/50 mt-8">
-              14-day free trial �� No credit card required • GitHub-like
+              14-day free trial • No credit card required • GitHub-like
               collaboration
             </p>
           </div>
