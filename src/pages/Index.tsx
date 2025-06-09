@@ -441,7 +441,7 @@ const Index = () => {
 
       <div
         ref={containerRef}
-        className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 dark:bg-black text-gray-900 dark:text-white overflow-hidden relative"
+        className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 dark:bg-black text-black dark:text-white overflow-hidden relative"
         style={{ perspective: "1000px" }}
       >
         {/* Morphing Background */}
@@ -468,7 +468,7 @@ const Index = () => {
               <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center">
                 <Network className="w-6 h-6 text-white" />
               </div>
-              <span className="font-bold text-2xl text-gray-900 dark:text-white">
+              <span className="font-bold text-2xl text-black dark:text-white">
                 CrewHub
               </span>
             </div>
@@ -478,7 +478,7 @@ const Index = () => {
                 <a
                   key={item}
                   href={`/${item.toLowerCase()}`}
-                  className="relative text-gray-700 hover:text-gray-900 dark:text-white/80 dark:hover:text-white transition-all duration-300 group"
+                  className="relative text-black hover:text-gray-800 dark:text-white/80 dark:hover:text-white transition-all duration-300 group"
                   data-magnetic
                 >
                   {item}
@@ -492,7 +492,7 @@ const Index = () => {
               <Button
                 variant="ghost"
                 size="lg"
-                className="text-gray-700 hover:text-gray-900 hover:bg-gray-100/80 dark:text-white/80 dark:hover:text-white dark:hover:bg-white/10 text-lg"
+                className="text-black hover:text-gray-800 hover:bg-gray-100/80 dark:text-white/80 dark:hover:text-white dark:hover:bg-white/10 text-lg"
                 data-magnetic
                 onClick={() => (window.location.href = "/signin")}
               >
@@ -517,17 +517,17 @@ const Index = () => {
           style={{ transformStyle: "preserve-3d" }}
         >
           <div className="container relative z-10 text-center max-w-6xl">
-            <Badge className="mb-8 bg-white/90 dark:bg-white/10 border-gray-300 dark:border-white/20 text-gray-800 dark:text-white backdrop-blur-sm text-lg px-6 py-3 rounded-full shadow-lg animate-pulse">
+            <Badge className="mb-8 bg-white/90 dark:bg-white/10 border-gray-400 dark:border-white/20 text-black dark:text-white backdrop-blur-sm text-lg px-6 py-3 rounded-full shadow-lg animate-pulse">
               <Bot className="w-5 h-5 mr-2" />
               AI Agent & MCP Management Platform
             </Badge>
 
             <h1
               ref={titleRef}
-              className="text-7xl md:text-9xl font-black mb-8 leading-tight text-gray-900 dark:text-white"
+              className="text-7xl md:text-9xl font-black mb-8 leading-tight text-black dark:text-white"
               style={{
                 background:
-                  "linear-gradient(45deg, #1f2937, #3b82f6, #8b5cf6, #1f2937)",
+                  "linear-gradient(45deg, #000000, #3b82f6, #8b5cf6, #000000)",
                 backgroundSize: "300% 300%",
                 WebkitBackgroundClip: "text",
                 WebkitTextFillColor: "transparent",
@@ -539,7 +539,7 @@ const Index = () => {
 
             <p
               ref={subtitleRef}
-              className="text-2xl md:text-3xl text-gray-700 dark:text-white/80 max-w-4xl mx-auto mb-16 leading-relaxed"
+              className="text-2xl md:text-3xl text-black dark:text-white/80 max-w-4xl mx-auto mb-16 leading-relaxed"
             >
               The collaborative workspace where AI agents, tools, and teams
               unite. Build, manage, and deploy intelligent workflows at scale.
@@ -565,7 +565,7 @@ const Index = () => {
               <Button
                 variant="outline"
                 size="lg"
-                className="cta-button h-16 px-12 text-xl border-2 border-gray-400 dark:border-white/30 text-gray-700 dark:text-white hover:bg-gray-100 dark:hover:bg-white/10 rounded-2xl backdrop-blur-sm transition-all duration-300"
+                className="cta-button h-16 px-12 text-xl border-2 border-gray-400 dark:border-white/30 text-black dark:text-white hover:bg-gray-100 dark:hover:bg-white/10 rounded-2xl backdrop-blur-sm transition-all duration-300"
                 data-magnetic
                 onClick={() => (window.location.href = "/demo")}
               >
@@ -574,7 +574,7 @@ const Index = () => {
               </Button>
             </div>
 
-            <div className="flex items-center justify-center gap-8 text-sm text-gray-600 dark:text-white/50 mt-8">
+            <div className="flex items-center justify-center gap-8 text-sm text-black dark:text-white/50 mt-8">
               <div className="flex items-center gap-2">
                 <CheckCircle className="h-4 w-4 text-green-500" />
                 GitHub-like collaboration
@@ -618,11 +618,11 @@ const Index = () => {
                 { label: "Teams Collaborating", value: 500, suffix: "+" },
               ].map((stat, index) => (
                 <div key={stat.label} className="text-center group">
-                  <div className="text-6xl font-black text-gray-900 dark:text-white mb-4 font-mono">
+                  <div className="text-6xl font-black text-black dark:text-white mb-4 font-mono">
                     <span data-count={stat.value}>0</span>
                     <span>{stat.suffix}</span>
                   </div>
-                  <div className="text-xl text-gray-700 dark:text-white/60 group-hover:text-gray-900 dark:group-hover:text-white/80 transition-colors">
+                  <div className="text-xl text-black dark:text-white/60 group-hover:text-gray-800 dark:group-hover:text-white/80 transition-colors">
                     {stat.label}
                   </div>
                 </div>
@@ -635,10 +635,10 @@ const Index = () => {
         <section ref={featuresRef} className="py-32 relative">
           <div className="container">
             <div className="text-center mb-20">
-              <h2 className="text-6xl font-black mb-8 text-gray-900 dark:text-white">
+              <h2 className="text-6xl font-black mb-8 text-black dark:text-white">
                 Everything You Need to Manage AI Teams
               </h2>
-              <p className="text-2xl text-gray-700 dark:text-white/70 max-w-4xl mx-auto">
+              <p className="text-2xl text-black dark:text-white/70 max-w-4xl mx-auto">
                 From agent catalogs to workflow orchestration, CrewHub provides
                 all the tools for intelligent collaboration
               </p>
@@ -711,11 +711,11 @@ const Index = () => {
                         </div>
                       </div>
 
-                      <CardTitle className="text-2xl font-bold text-gray-900 dark:text-white mb-4 group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:from-blue-600 group-hover:to-purple-600 group-hover:bg-clip-text transition-all duration-300">
+                      <CardTitle className="text-2xl font-bold text-black dark:text-white mb-4 group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:from-blue-600 group-hover:to-purple-600 group-hover:bg-clip-text transition-all duration-300">
                         {feature.title}
                       </CardTitle>
 
-                      <CardDescription className="text-lg text-gray-700 dark:text-white/70 leading-relaxed group-hover:text-gray-900 dark:group-hover:text-white/90 transition-colors duration-300">
+                      <CardDescription className="text-lg text-black dark:text-white/70 leading-relaxed group-hover:text-gray-800 dark:group-hover:text-white/90 transition-colors duration-300">
                         {feature.description}
                       </CardDescription>
                     </CardHeader>
@@ -726,14 +726,14 @@ const Index = () => {
           </div>
         </section>
 
-        {/* Target Users Section */}
-        <section className="py-32 relative bg-gray-50 dark:bg-gray-900">
+        {/* Target Users Section - Fixed Light Mode Background */}
+        <section className="py-32 relative bg-white dark:bg-gray-900">
           <div className="container">
             <div className="text-center mb-20">
-              <h2 className="text-6xl font-black mb-8 text-gray-900 dark:text-white">
+              <h2 className="text-6xl font-black mb-8 text-black dark:text-white">
                 Built for Teams That Build Tomorrow
               </h2>
-              <p className="text-2xl text-gray-700 dark:text-white/70 max-w-4xl mx-auto">
+              <p className="text-2xl text-black dark:text-white/70 max-w-4xl mx-auto">
                 From development teams to enterprise innovation departments,
                 CrewHub empowers organizations to harness AI collaboration
               </p>
@@ -779,7 +779,7 @@ const Index = () => {
                   key={user.title}
                   className="group hover:scale-105 transition-all duration-300"
                 >
-                  <Card className="h-full bg-white/95 dark:bg-black/40 border border-gray-300 dark:border-white/20 backdrop-blur-xl rounded-3xl p-8 hover:border-gray-400 dark:hover:border-white/40 transition-all duration-500 shadow-lg hover:shadow-xl">
+                  <Card className="h-full bg-white dark:bg-black/40 border border-gray-300 dark:border-white/20 backdrop-blur-xl rounded-3xl p-8 hover:border-gray-400 dark:hover:border-white/40 transition-all duration-500 shadow-lg hover:shadow-xl">
                     <CardHeader>
                       <div className="flex items-center space-x-4 mb-6">
                         <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl flex items-center justify-center group-hover:rotate-12 group-hover:scale-110 transition-all duration-500">
@@ -787,11 +787,11 @@ const Index = () => {
                         </div>
                       </div>
 
-                      <CardTitle className="text-2xl font-bold text-gray-900 dark:text-white mb-4 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+                      <CardTitle className="text-2xl font-bold text-black dark:text-white mb-4 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
                         {user.title}
                       </CardTitle>
 
-                      <CardDescription className="text-lg text-gray-700 dark:text-white/70 mb-6 group-hover:text-gray-900 dark:group-hover:text-white/90 transition-colors">
+                      <CardDescription className="text-lg text-black dark:text-white/70 mb-6 group-hover:text-gray-800 dark:group-hover:text-white/90 transition-colors">
                         {user.description}
                       </CardDescription>
                     </CardHeader>
@@ -801,7 +801,7 @@ const Index = () => {
                         {user.features.map((feature, i) => (
                           <li key={i} className="flex items-center gap-3">
                             <CheckCircle className="h-5 w-5 text-green-500 flex-shrink-0" />
-                            <span className="text-gray-700 dark:text-white/70 group-hover:text-gray-900 dark:group-hover:text-white/90 transition-colors">
+                            <span className="text-black dark:text-white/70 group-hover:text-gray-800 dark:group-hover:text-white/90 transition-colors">
                               {feature}
                             </span>
                           </li>
@@ -818,10 +818,10 @@ const Index = () => {
         {/* CTA Section */}
         <section className="py-32 relative">
           <div className="container text-center">
-            <h2 className="text-6xl font-black mb-8 text-gray-900 dark:text-white">
+            <h2 className="text-6xl font-black mb-8 text-black dark:text-white">
               Ready to Orchestrate AI Excellence?
             </h2>
-            <p className="text-2xl text-gray-700 dark:text-white/70 mb-16 max-w-3xl mx-auto">
+            <p className="text-2xl text-black dark:text-white/70 mb-16 max-w-3xl mx-auto">
               Join thousands of teams building the future with intelligent agent
               collaboration
             </p>
@@ -842,7 +842,7 @@ const Index = () => {
               <Button
                 variant="outline"
                 size="lg"
-                className="h-20 px-16 text-2xl border-2 border-gray-400 dark:border-white/30 text-gray-700 dark:text-white hover:bg-gray-100 dark:hover:bg-white/10 rounded-3xl backdrop-blur-sm transition-all duration-300"
+                className="h-20 px-16 text-2xl border-2 border-gray-400 dark:border-white/30 text-black dark:text-white hover:bg-gray-100 dark:hover:bg-white/10 rounded-3xl backdrop-blur-sm transition-all duration-300"
                 data-magnetic
                 onClick={() => (window.location.href = "/contact")}
               >
@@ -853,7 +853,7 @@ const Index = () => {
               </Button>
             </div>
 
-            <p className="text-lg text-gray-600 dark:text-white/50 mt-8">
+            <p className="text-lg text-black dark:text-white/50 mt-8">
               14-day free trial • No credit card required • GitHub-like
               collaboration
             </p>
@@ -861,7 +861,7 @@ const Index = () => {
         </section>
 
         {/* Footer */}
-        <footer className="border-t border-gray-300 dark:border-white/10 bg-white/80 dark:bg-black/50 backdrop-blur-xl">
+        <footer className="border-t border-gray-300 dark:border-white/10 bg-white dark:bg-black/50 backdrop-blur-xl">
           <div className="container py-16">
             <div className="grid grid-cols-1 md:grid-cols-4 gap-12">
               <div className="space-y-6">
@@ -869,11 +869,11 @@ const Index = () => {
                   <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center">
                     <Network className="w-6 h-6 text-white" />
                   </div>
-                  <span className="font-bold text-2xl text-gray-900 dark:text-white">
+                  <span className="font-bold text-2xl text-black dark:text-white">
                     CrewHub
                   </span>
                 </div>
-                <p className="text-gray-700 dark:text-white/60 leading-relaxed">
+                <p className="text-black dark:text-white/60 leading-relaxed">
                   The comprehensive platform for AI agent and MCP management.
                   Build, collaborate, and scale intelligent workflows.
                 </p>
@@ -904,7 +904,7 @@ const Index = () => {
                 },
               ].map((section) => (
                 <div key={section.title}>
-                  <h3 className="font-bold text-gray-900 dark:text-white mb-6 text-lg">
+                  <h3 className="font-bold text-black dark:text-white mb-6 text-lg">
                     {section.title}
                   </h3>
                   <ul className="space-y-4">
@@ -912,7 +912,7 @@ const Index = () => {
                       <li key={link}>
                         <a
                           href={`/${link.toLowerCase().replace(" ", "-")}`}
-                          className="text-gray-700 dark:text-white/60 hover:text-gray-900 dark:hover:text-white transition-colors duration-300"
+                          className="text-black dark:text-white/60 hover:text-gray-800 dark:hover:text-white transition-colors duration-300"
                         >
                           {link}
                         </a>
@@ -924,7 +924,7 @@ const Index = () => {
             </div>
 
             <div className="mt-16 pt-8 border-t border-gray-300 dark:border-white/10 text-center">
-              <p className="text-gray-600 dark:text-white/40">
+              <p className="text-black dark:text-white/40">
                 © 2024 CrewHub. Orchestrating AI excellence for teams
                 worldwide.
               </p>
