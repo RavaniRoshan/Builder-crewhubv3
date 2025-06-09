@@ -29,12 +29,17 @@ import {
   Layers,
   Sparkles,
   Play,
+  GitBranch,
+  Network,
+  Settings,
+  Database,
+  Monitor,
+  Cpu,
 } from "lucide-react";
 import { useRef, useEffect, useState } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { TextPlugin } from "gsap/TextPlugin";
-import { MorphSVGPlugin } from "gsap/MorphSVGPlugin";
 
 // Register GSAP plugins
 gsap.registerPlugin(ScrollTrigger, TextPlugin);
@@ -394,7 +399,7 @@ const Index = () => {
           <div className="container flex h-20 items-center justify-between px-8">
             <div className="flex items-center space-x-3" data-magnetic>
               <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center">
-                <span className="text-white font-bold text-xl">C</span>
+                <Network className="w-6 h-6 text-white" />
               </div>
               <span className="font-bold text-2xl bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
                 CrewHub
@@ -402,7 +407,7 @@ const Index = () => {
             </div>
 
             <div className="hidden md:flex items-center space-x-12 text-lg font-medium">
-              {["Features", "Pricing", "About"].map((item, index) => (
+              {["Features", "Pricing", "Docs"].map((item, index) => (
                 <a
                   key={item}
                   href={`/${item.toLowerCase()}`}
@@ -422,6 +427,7 @@ const Index = () => {
                 size="lg"
                 className="text-white/70 hover:text-white hover:bg-white/10 text-lg"
                 data-magnetic
+                onClick={() => (window.location.href = "/signin")}
               >
                 Sign In
               </Button>
@@ -429,8 +435,9 @@ const Index = () => {
                 size="lg"
                 className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white text-lg px-8 rounded-xl shadow-xl hover:shadow-2xl transition-all duration-300"
                 data-magnetic
+                onClick={() => (window.location.href = "/signup")}
               >
-                Get Started
+                Start Building
               </Button>
             </div>
           </div>
@@ -444,8 +451,8 @@ const Index = () => {
         >
           <div className="container relative z-10 text-center max-w-6xl">
             <Badge className="mb-8 bg-white/10 border-white/20 text-white backdrop-blur-sm text-lg px-6 py-2 rounded-full">
-              <Sparkles className="w-5 h-5 mr-2" />
-              AI Revolution Starts Here
+              <Bot className="w-5 h-5 mr-2" />
+              AI Agent & MCP Management Platform
             </Badge>
 
             <h1
@@ -460,15 +467,15 @@ const Index = () => {
                 animation: "gradient 3s ease infinite",
               }}
             >
-              The Future of AI
+              Orchestrate AI Teams
             </h1>
 
             <p
               ref={subtitleRef}
               className="text-2xl md:text-3xl text-white/80 max-w-4xl mx-auto mb-16 leading-relaxed"
             >
-              Orchestrate AI agents with unprecedented power and simplicity.
-              Build workflows that think, adapt, and evolve.
+              The collaborative workspace where AI agents, tools, and teams
+              unite. Build, manage, and deploy intelligent workflows at scale.
             </p>
 
             <div
@@ -479,9 +486,10 @@ const Index = () => {
                 size="lg"
                 className="cta-button h-16 px-12 text-xl bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white rounded-2xl shadow-2xl hover:shadow-blue-500/25 transition-all duration-500 relative overflow-hidden group"
                 data-magnetic
+                onClick={() => (window.location.href = "/signup")}
               >
                 <span className="relative z-10 flex items-center">
-                  Start Your Journey
+                  Start Your Workspace
                   <ArrowRight className="ml-3 h-6 w-6 group-hover:translate-x-2 transition-transform duration-300" />
                 </span>
                 <div className="absolute inset-0 bg-gradient-to-r from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
@@ -492,10 +500,26 @@ const Index = () => {
                 size="lg"
                 className="cta-button h-16 px-12 text-xl border-2 border-white/30 text-white hover:bg-white/10 rounded-2xl backdrop-blur-sm transition-all duration-300"
                 data-magnetic
+                onClick={() => (window.location.href = "/demo")}
               >
                 <Play className="mr-3 h-6 w-6" />
-                Watch Demo
+                See Agents in Action
               </Button>
+            </div>
+
+            <div className="flex items-center justify-center gap-8 text-sm text-white/50 mt-8">
+              <div className="flex items-center gap-2">
+                <CheckCircle className="h-4 w-4 text-green-400" />
+                GitHub-like collaboration
+              </div>
+              <div className="flex items-center gap-2">
+                <CheckCircle className="h-4 w-4 text-green-400" />
+                Multi-model orchestration
+              </div>
+              <div className="flex items-center gap-2">
+                <CheckCircle className="h-4 w-4 text-green-400" />
+                Enterprise ready
+              </div>
             </div>
           </div>
 
@@ -521,10 +545,10 @@ const Index = () => {
           <div className="container">
             <div className="grid grid-cols-2 md:grid-cols-4 gap-12 max-w-6xl mx-auto">
               {[
-                { label: "AI Models", value: 500, suffix: "+" },
-                { label: "Workflows", value: 50000, suffix: "+" },
-                { label: "Users", value: 10000, suffix: "+" },
-                { label: "Uptime", value: 99.9, suffix: "%" },
+                { label: "AI Models Integrated", value: 50, suffix: "+" },
+                { label: "Active Workspaces", value: 1200, suffix: "+" },
+                { label: "Workflows Created", value: 15000, suffix: "+" },
+                { label: "Teams Collaborating", value: 500, suffix: "+" },
               ].map((stat, index) => (
                 <div key={stat.label} className="text-center group">
                   <div className="text-6xl font-black text-white mb-4 font-mono">
@@ -545,11 +569,11 @@ const Index = () => {
           <div className="container">
             <div className="text-center mb-20">
               <h2 className="text-6xl font-black mb-8 text-white">
-                Superpowers for AI
+                Everything You Need to Manage AI Teams
               </h2>
               <p className="text-2xl text-white/70 max-w-4xl mx-auto">
-                Unleash the full potential of artificial intelligence with our
-                cutting-edge platform
+                From agent catalogs to workflow orchestration, CrewHub provides
+                all the tools for intelligent collaboration
               </p>
             </div>
 
@@ -557,44 +581,44 @@ const Index = () => {
               {[
                 {
                   icon: Bot,
-                  title: "AI Agent Orchestration",
+                  title: "AI Agent Catalog",
                   description:
-                    "Command multiple AI models with precision. Create intelligent workflows that adapt and evolve.",
+                    "Integrate Claude, ChatGPT, Gemini, and more. Configure specialized profiles with custom instructions and knowledge bases.",
                   gradient: "from-blue-500 to-cyan-500",
                 },
                 {
                   icon: Workflow,
-                  title: "Visual Flow Builder",
+                  title: "Visual Workflow Builder",
                   description:
-                    "Design complex workflows with intuitive drag-and-drop. No code required, infinite possibilities.",
+                    "Drag-and-drop interface for creating complex multi-agent workflows. Connect agents, tools, and data sources seamlessly.",
                   gradient: "from-purple-500 to-pink-500",
                 },
                 {
                   icon: Users,
-                  title: "Collaborative Intelligence",
+                  title: "Team Collaboration",
                   description:
-                    "Teams that think together, win together. Real-time collaboration with AI assistance.",
+                    "Real-time collaboration with role-based permissions. Share workflows, agents, and projects across your organization.",
                   gradient: "from-green-500 to-emerald-500",
                 },
                 {
-                  icon: Zap,
-                  title: "Lightning Integration",
+                  icon: Network,
+                  title: "Tool & MCP Integration",
                   description:
-                    "Connect any tool, any API, any data source. Build bridges between worlds.",
+                    "Extensive library of tools and Machine Control Protocols. Chain outputs between agents and external systems.",
                   gradient: "from-yellow-500 to-orange-500",
                 },
                 {
                   icon: BarChart3,
-                  title: "Predictive Analytics",
+                  title: "Analytics & Monitoring",
                   description:
-                    "See the future before it happens. Advanced analytics powered by machine learning.",
+                    "Track performance, costs, and usage across all agents. Optimize workflows with detailed insights and metrics.",
                   gradient: "from-red-500 to-pink-500",
                 },
                 {
                   icon: Target,
-                  title: "Smart Optimization",
+                  title: "Smart Recommendations",
                   description:
-                    "AI that optimizes itself. Continuous learning and improvement without human intervention.",
+                    "AI-powered suggestions for optimal agent selection, workflow improvements, and tool recommendations.",
                   gradient: "from-indigo-500 to-purple-500",
                 },
               ].map((feature, index) => (
@@ -637,15 +661,104 @@ const Index = () => {
           </div>
         </section>
 
+        {/* Target Users Section */}
+        <section className="py-32 relative">
+          <div className="container">
+            <div className="text-center mb-20">
+              <h2 className="text-6xl font-black mb-8 text-white">
+                Built for Teams That Build Tomorrow
+              </h2>
+              <p className="text-2xl text-white/70 max-w-4xl mx-auto">
+                From development teams to enterprise innovation departments,
+                CrewHub empowers organizations to harness AI collaboration
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-7xl mx-auto">
+              {[
+                {
+                  icon: Code,
+                  title: "Development Teams",
+                  description:
+                    "Accelerate software development with AI-powered code generation, testing, and deployment workflows.",
+                  features: [
+                    "Multi-model code review",
+                    "Automated testing agents",
+                    "Deployment orchestration",
+                  ],
+                },
+                {
+                  icon: Lightbulb,
+                  title: "Content Agencies",
+                  description:
+                    "Scale content creation with specialized agents for writing, editing, design, and multimedia production.",
+                  features: [
+                    "Brand-consistent content",
+                    "Multi-format generation",
+                    "Quality assurance workflows",
+                  ],
+                },
+                {
+                  icon: Building,
+                  title: "Enterprise Teams",
+                  description:
+                    "Transform business processes with enterprise-grade AI workflows and governance controls.",
+                  features: [
+                    "Process automation",
+                    "Compliance monitoring",
+                    "Data analysis pipelines",
+                  ],
+                },
+              ].map((user, index) => (
+                <div
+                  key={user.title}
+                  className="group hover:scale-105 transition-all duration-300"
+                >
+                  <Card className="h-full bg-black/40 border border-white/20 backdrop-blur-xl rounded-3xl p-8 hover:border-white/40 transition-all duration-500">
+                    <CardHeader>
+                      <div className="flex items-center space-x-4 mb-6">
+                        <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl flex items-center justify-center group-hover:rotate-12 group-hover:scale-110 transition-all duration-500">
+                          <user.icon className="w-8 h-8 text-white" />
+                        </div>
+                      </div>
+
+                      <CardTitle className="text-2xl font-bold text-white mb-4 group-hover:text-blue-400 transition-colors">
+                        {user.title}
+                      </CardTitle>
+
+                      <CardDescription className="text-lg text-white/70 mb-6 group-hover:text-white/90 transition-colors">
+                        {user.description}
+                      </CardDescription>
+                    </CardHeader>
+
+                    <CardContent>
+                      <ul className="space-y-3">
+                        {user.features.map((feature, i) => (
+                          <li key={i} className="flex items-center gap-3">
+                            <CheckCircle className="h-5 w-5 text-green-400 flex-shrink-0" />
+                            <span className="text-white/70 group-hover:text-white/90 transition-colors">
+                              {feature}
+                            </span>
+                          </li>
+                        ))}
+                      </ul>
+                    </CardContent>
+                  </Card>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
         {/* CTA Section */}
         <section className="py-32 relative">
           <div className="container text-center">
             <h2 className="text-6xl font-black mb-8 text-white">
-              Ready to Transform Reality?
+              Ready to Orchestrate AI Excellence?
             </h2>
             <p className="text-2xl text-white/70 mb-16 max-w-3xl mx-auto">
-              Join the revolution. Build the future. Shape tomorrow with AI that
-              understands you.
+              Join thousands of teams building the future with intelligent agent
+              collaboration
             </p>
 
             <div className="flex flex-col sm:flex-row items-center justify-center gap-8">
@@ -653,13 +766,32 @@ const Index = () => {
                 size="lg"
                 className="h-20 px-16 text-2xl bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white rounded-3xl shadow-2xl hover:shadow-blue-500/25 transition-all duration-500 group"
                 data-magnetic
+                onClick={() => (window.location.href = "/signup")}
               >
                 <span className="flex items-center">
-                  Begin Your Journey
-                  <Rocket className="ml-4 h-7 w-7 group-hover:translate-y-[-4px] transition-transform duration-300" />
+                  Start Your AI Workspace
+                  <Network className="ml-4 h-7 w-7 group-hover:rotate-12 transition-transform duration-300" />
+                </span>
+              </Button>
+
+              <Button
+                variant="outline"
+                size="lg"
+                className="h-20 px-16 text-2xl border-2 border-white/30 text-white hover:bg-white/10 rounded-3xl backdrop-blur-sm transition-all duration-300"
+                data-magnetic
+                onClick={() => (window.location.href = "/contact")}
+              >
+                <span className="flex items-center">
+                  Enterprise Demo
+                  <Building className="ml-4 h-7 w-7" />
                 </span>
               </Button>
             </div>
+
+            <p className="text-lg text-white/50 mt-8">
+              14-day free trial • No credit card required • GitHub-like
+              collaboration
+            </p>
           </div>
         </section>
 
@@ -670,28 +802,38 @@ const Index = () => {
               <div className="space-y-6">
                 <div className="flex items-center space-x-3">
                   <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center">
-                    <span className="text-white font-bold text-xl">C</span>
+                    <Network className="w-6 h-6 text-white" />
                   </div>
                   <span className="font-bold text-2xl text-white">CrewHub</span>
                 </div>
                 <p className="text-white/60 leading-relaxed">
-                  The future of AI collaboration starts here. Build, deploy, and
-                  scale AI agents that think beyond limits.
+                  The comprehensive platform for AI agent and MCP management.
+                  Build, collaborate, and scale intelligent workflows.
                 </p>
               </div>
 
               {[
                 {
-                  title: "Product",
-                  links: ["Features", "Pricing", "Documentation", "API"],
+                  title: "Platform",
+                  links: [
+                    "Agent Catalog",
+                    "Workflow Builder",
+                    "Team Collaboration",
+                    "Analytics Dashboard",
+                  ],
+                },
+                {
+                  title: "Resources",
+                  links: [
+                    "Documentation",
+                    "API Reference",
+                    "Community",
+                    "Blog",
+                  ],
                 },
                 {
                   title: "Company",
-                  links: ["About", "Blog", "Careers", "Contact"],
-                },
-                {
-                  title: "Support",
-                  links: ["Help Center", "Community", "Status", "Security"],
+                  links: ["About", "Careers", "Contact", "Enterprise"],
                 },
               ].map((section) => (
                 <div key={section.title}>
@@ -716,7 +858,8 @@ const Index = () => {
 
             <div className="mt-16 pt-8 border-t border-white/10 text-center">
               <p className="text-white/40">
-                © 2024 CrewHub. Crafted with AI precision and human creativity.
+                © 2024 CrewHub. Orchestrating AI excellence for teams
+                worldwide.
               </p>
             </div>
           </div>
