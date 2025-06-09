@@ -143,7 +143,6 @@ const Index = () => {
         delay: 0.2
       });
     }
-    }
 
     // Morphing background animation
     if (morphingBgRef.current) {
