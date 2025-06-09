@@ -226,6 +226,50 @@ const Index = () => {
     };
   }, []);
 
+  // Navigation scroll animation
+  useEffect(() => {
+    if (!navRef.current) return;
+
+    // Enhanced floating navigation with scroll-based effects
+    gsap.to(navRef.current, {
+      y: 0,
+      scale: 1,
+      backdropFilter: "blur(20px)",
+      scrollTrigger: {
+        trigger: containerRef.current,
+        start: "top top",
+        end: "bottom bottom",
+        scrub: 1,
+        onUpdate: (self) => {
+          const progress = self.progress;
+          // More pronounced floating effect as user scrolls
+          gsap.to(navRef.current, {
+            y: progress * -10,
+            scale: 1 - progress * 0.02,
+            duration: 0.3,
+            ease: "power2.out"
+          });
+        }
+      }
+    });
+
+    // Navigation background opacity based on scroll
+    gsap.to(navRef.current, {
+      backgroundColor: "rgba(0, 0, 0, 0.8)",
+      borderColor: "rgba(255, 255, 255, 0.3)",
+      scrollTrigger: {
+        trigger: containerRef.current,
+        start: "100px top",
+        end: "200px top",
+        scrub: 1
+      }
+    });
+
+    return () => {
+      ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+    };
+  }, []);
+
   // ScrollTrigger animations
   useEffect(() => {
     if (!featuresRef.current) return;
@@ -394,7 +438,11 @@ const Index = () => {
         {/* Floating Navigation */}
         <nav
           ref={navRef}
-          className="fixed top-6 left-6 right-6 z-50 backdrop-blur-2xl bg-black/30 border border-white/20 rounded-2xl shadow-2xl"
+          className="fixed top-6 left-6 right-6 z-50 backdrop-blur-2xl bg-black/20 border border-white/10 rounded-2xl shadow-2xl transition-all duration-300"
+          style={{
+            willChange: 'transform, background-color, border-color',
+            transform: 'translateZ(0)' // Force hardware acceleration
+          }}
         >
           <div className="container flex h-20 items-center justify-between px-8">
             <div className="flex items-center space-x-3" data-magnetic>
@@ -446,11 +494,12 @@ const Index = () => {
         {/* Hero Section */}
         <section
           ref={heroRef}
-          className="min-h-screen flex items-center justify-center relative"
-          style={{ transformStyle: "preserve-3d" }}
+          className="min-h-screen flex items-center justify-center relative pt-32"
+          style={{ transformStyle: 'preserve-3d' }}
+        >
         >
           <div className="container relative z-10 text-center max-w-6xl">
-            <Badge className="mb-8 bg-white/10 border-white/20 text-white backdrop-blur-sm text-lg px-6 py-2 rounded-full">
+            <Badge className="mb-8 bg-white/10 border-white/20 text-white backdrop-blur-sm text-lg px-6 py-3 rounded-full shadow-lg animate-pulse">
               <Bot className="w-5 h-5 mr-2" />
               AI Agent & MCP Management Platform
             </Badge>
