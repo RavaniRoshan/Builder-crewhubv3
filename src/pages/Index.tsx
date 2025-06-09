@@ -442,7 +442,7 @@ const Index = () => {
       <div
         ref={containerRef}
         className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 dark:bg-black text-gray-900 dark:text-white overflow-hidden relative"
-        style={{ perspective: '1000px' }}
+        style={{ perspective: "1000px" }}
       >
         {/* Morphing Background */}
         <div
@@ -474,7 +474,7 @@ const Index = () => {
             </div>
 
             <div className="hidden md:flex items-center space-x-12 text-lg font-medium">
-              {['Features', 'Pricing', 'Docs'].map((item) => (
+              {["Features", "Pricing", "Docs"].map((item) => (
                 <a
                   key={item}
                   href={`/${item.toLowerCase()}`}
@@ -526,11 +526,12 @@ const Index = () => {
               ref={titleRef}
               className="text-7xl md:text-9xl font-black mb-8 leading-tight text-gray-900 dark:text-white"
               style={{
-                background: 'linear-gradient(45deg, #1f2937, #3b82f6, #8b5cf6, #1f2937)',
-                backgroundSize: '300% 300%',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-                animation: 'gradient 3s ease infinite'
+                background:
+                  "linear-gradient(45deg, #1f2937, #3b82f6, #8b5cf6, #1f2937)",
+                backgroundSize: "300% 300%",
+                WebkitBackgroundClip: "text",
+                WebkitTextFillColor: "transparent",
+                animation: "gradient 3s ease infinite",
               }}
             >
               Orchestrate AI Teams
@@ -540,7 +541,6 @@ const Index = () => {
               ref={subtitleRef}
               className="text-2xl md:text-3xl text-gray-700 dark:text-gray-300 max-w-4xl mx-auto mb-16 leading-relaxed"
             >
-            >
               The collaborative workspace where AI agents, tools, and teams
               unite. Build, manage, and deploy intelligent workflows at scale.
             </p>
@@ -549,6 +549,16 @@ const Index = () => {
               ref={ctaRef}
               className="flex flex-col sm:flex-row items-center justify-center gap-8"
             >
+              <Button
+                size="lg"
+                className="h-16 px-12 text-xl bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300"
+                data-magnetic
+                onClick={() => (window.location.href = "/signup")}
+              >
+                <Rocket className="mr-3 h-6 w-6" />
+                Start Your Workspace
+              </Button>
+
               <Button
                 variant="outline"
                 size="lg"
@@ -562,18 +572,6 @@ const Index = () => {
             </div>
 
             <div className="flex items-center justify-center gap-8 text-sm text-gray-600 dark:text-gray-400 mt-8">
-                data-magnetic
-                onClick={() => (window.location.href = "/demo")}
-              >
-                <Play className="mr-3 h-6 w-6" />
-                See Agents in Action
-              </Button>
-            </div>
-
-            <div
-              className="flex items-center justify-center gap-8 text-sm mt-8"
-              style={{ color: "rgb(0, 0, 0)" }}
-            >
               <div className="flex items-center gap-2">
                 <CheckCircle className="h-4 w-4 text-green-500" />
                 GitHub-like collaboration
@@ -617,7 +615,6 @@ const Index = () => {
                 { label: "Teams Collaborating", value: 500, suffix: "+" },
               ].map((stat, index) => (
                 <div key={stat.label} className="text-center group">
-                  <div
                   <div className="text-6xl font-black text-gray-900 dark:text-white mb-4 font-mono">
                     <span data-count={stat.value}>0</span>
                     <span>{stat.suffix}</span>
@@ -639,9 +636,9 @@ const Index = () => {
                 Everything You Need to Manage AI Teams
               </h2>
               <p className="text-2xl text-gray-700 dark:text-gray-300 max-w-4xl mx-auto">
-                From agent catalogs to workflow orchestration, CrewHub provides all the tools for intelligent collaboration
+                From agent catalogs to workflow orchestration, CrewHub provides
+                all the tools for intelligent collaboration
               </p>
-            </div>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
@@ -704,7 +701,9 @@ const Index = () => {
 
                     <CardHeader className="relative z-10">
                       <div className="flex items-center space-x-4 mb-6">
-                        <div className={`feature-icon w-16 h-16 rounded-2xl bg-gradient-to-r ${feature.gradient} flex items-center justify-center shadow-lg`}>
+                        <div
+                          className={`feature-icon w-16 h-16 rounded-2xl bg-gradient-to-r ${feature.gradient} flex items-center justify-center shadow-lg`}
+                        >
                           <feature.icon className="w-8 h-8 text-white" />
                         </div>
                       </div>
@@ -717,7 +716,6 @@ const Index = () => {
                         {feature.description}
                       </CardDescription>
                     </CardHeader>
-                  </Card>
                   </Card>
                 </div>
               ))}
@@ -733,9 +731,9 @@ const Index = () => {
                 Built for Teams That Build Tomorrow
               </h2>
               <p className="text-2xl text-gray-700 dark:text-gray-300 max-w-4xl mx-auto">
-                From development teams to enterprise innovation departments, CrewHub empowers organizations to harness AI collaboration
+                From development teams to enterprise innovation departments,
+                CrewHub empowers organizations to harness AI collaboration
               </p>
-            </div>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-7xl mx-auto">
@@ -817,12 +815,12 @@ const Index = () => {
         {/* CTA Section */}
         <section className="py-32 relative">
           <div className="container text-center">
-            <h2
             <h2 className="text-6xl font-black mb-8 text-gray-900 dark:text-white">
               Ready to Orchestrate AI Excellence?
             </h2>
             <p className="text-2xl text-gray-700 dark:text-gray-300 mb-16 max-w-3xl mx-auto">
-              Join thousands of teams building the future with intelligent agent collaboration
+              Join thousands of teams building the future with intelligent agent
+              collaboration
             </p>
 
             <div className="flex flex-col sm:flex-row items-center justify-center gap-8">
@@ -853,8 +851,6 @@ const Index = () => {
             </div>
 
             <p className="text-lg text-gray-600 dark:text-gray-400 mt-8">
-              14-day free trial • No credit card required • GitHub-like collaboration
-            </p>
               14-day free trial • No credit card required • GitHub-like
               collaboration
             </p>
@@ -862,7 +858,7 @@ const Index = () => {
         </section>
 
         {/* Footer */}
-        <footer className="border-t border-gray-300 bg-white backdrop-blur-xl">
+        <footer className="border-t border-gray-300 dark:border-gray-700 bg-white/80 dark:bg-gray-900/80 backdrop-blur-xl">
           <div className="container py-16">
             <div className="grid grid-cols-1 md:grid-cols-4 gap-12">
               <div className="space-y-6">
@@ -870,17 +866,11 @@ const Index = () => {
                   <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center">
                     <Network className="w-6 h-6 text-white" />
                   </div>
-                  <span
-                    className="font-bold text-2xl"
-                    style={{ color: "rgb(0, 0, 0)" }}
-                  >
+                  <span className="font-bold text-2xl text-gray-900 dark:text-white">
                     CrewHub
                   </span>
                 </div>
-                <p
-                  className="leading-relaxed"
-                  style={{ color: "rgb(0, 0, 0)" }}
-                >
+                <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
                   The comprehensive platform for AI agent and MCP management.
                   Build, collaborate, and scale intelligent workflows.
                 </p>
@@ -911,10 +901,7 @@ const Index = () => {
                 },
               ].map((section) => (
                 <div key={section.title}>
-                  <h3
-                    className="font-bold mb-6 text-lg"
-                    style={{ color: "rgb(0, 0, 0)" }}
-                  >
+                  <h3 className="font-bold mb-6 text-lg text-gray-900 dark:text-white">
                     {section.title}
                   </h3>
                   <ul className="space-y-4">
@@ -922,8 +909,7 @@ const Index = () => {
                       <li key={link}>
                         <a
                           href={`/${link.toLowerCase().replace(" ", "-")}`}
-                          className="hover:text-gray-800 transition-colors duration-300"
-                          style={{ color: "rgb(0, 0, 0)" }}
+                          className="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors duration-300"
                         >
                           {link}
                         </a>
@@ -934,8 +920,8 @@ const Index = () => {
               ))}
             </div>
 
-            <div className="mt-16 pt-8 border-t border-gray-300 text-center">
-              <p style={{ color: "rgb(0, 0, 0)" }}>
+            <div className="mt-16 pt-8 border-t border-gray-300 dark:border-gray-700 text-center">
+              <p className="text-gray-700 dark:text-gray-300">
                 © 2024 CrewHub. Orchestrating AI excellence for teams
                 worldwide.
               </p>
