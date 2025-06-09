@@ -129,26 +129,30 @@ const Index = () => {
     heroTl.current = gsap.timeline();
 
     // Navigation slide down with elastic effect
-    heroTl.current.from(navRef.current, {
-      y: -100,
-      opacity: 0,
-      duration: 1.2,
-      ease: "elastic.out(1, 0.8)",
-    });
+    if (navRef.current) {
+      heroTl.current.from(navRef.current, {
+        y: -100,
+        opacity: 0,
+        duration: 1.2,
+        ease: "elastic.out(1, 0.8)",
+      });
+    }
 
     // Morphing background animation
-    heroTl.current.to(
-      morphingBgRef.current,
-      {
-        scale: 1.2,
-        rotation: 45,
-        duration: 20,
-        repeat: -1,
-        yoyo: true,
-        ease: "sine.inOut",
-      },
-      0,
-    );
+    if (morphingBgRef.current) {
+      heroTl.current.to(
+        morphingBgRef.current,
+        {
+          scale: 1.2,
+          rotation: 45,
+          duration: 20,
+          repeat: -1,
+          yoyo: true,
+          ease: "sine.inOut",
+        },
+        0,
+      );
+    }
 
     // Title animation with split text effect
     const titleChars = (titleRef.current?.textContent || "").split("");
@@ -188,17 +192,19 @@ const Index = () => {
     }
 
     // Subtitle typewriter effect
-    heroTl.current.to(
-      subtitleRef.current,
-      {
-        opacity: 1,
-        y: 0,
-        rotationX: 0,
-        duration: 1,
-        ease: "power3.out",
-      },
-      1.5,
-    );
+    if (subtitleRef.current) {
+      heroTl.current.to(
+        subtitleRef.current,
+        {
+          opacity: 1,
+          y: 0,
+          rotationX: 0,
+          duration: 1,
+          ease: "power3.out",
+        },
+        1.5,
+      );
+    }
 
     // CTA buttons with staggered bounce
     if (ctaRef.current) {
@@ -226,127 +232,117 @@ const Index = () => {
     };
   }, []);
 
-  // Navigation scroll animation
+  // All ScrollTrigger animations in one effect
   useEffect(() => {
-    if (!navRef.current) return;
+    const ctx = gsap.context(() => {
+      // Navigation scroll animation
+      if (navRef.current) {
+        gsap.to(navRef.current, {
+          backgroundColor: "rgba(0, 0, 0, 0.8)",
+          borderColor: "rgba(255, 255, 255, 0.3)",
+          backdropFilter: "blur(30px)",
+          scrollTrigger: {
+            trigger: containerRef.current,
+            start: "100px top",
+            end: "200px top",
+            scrub: 1,
+          },
+        });
 
-    // Enhanced floating navigation with scroll-based effects
-    gsap.to(navRef.current, {
-      y: 0,
-      scale: 1,
-      backdropFilter: "blur(20px)",
-      scrollTrigger: {
-        trigger: containerRef.current,
-        start: "top top",
-        end: "bottom bottom",
-        scrub: 1,
-        onUpdate: (self) => {
-          const progress = self.progress;
-          // More pronounced floating effect as user scrolls
-          gsap.to(navRef.current, {
-            y: progress * -10,
-            scale: 1 - progress * 0.02,
-            duration: 0.3,
-            ease: "power2.out",
-          });
+        gsap.to(navRef.current, {
+          y: -5,
+          scale: 0.98,
+          scrollTrigger: {
+            trigger: containerRef.current,
+            start: "top top",
+            end: "bottom bottom",
+            scrub: 1,
+          },
+        });
+      }
+
+      // Parallax background elements
+      gsap.to(".parallax-slow", {
+        yPercent: -50,
+        ease: "none",
+        scrollTrigger: {
+          trigger: containerRef.current,
+          start: "top bottom",
+          end: "bottom top",
+          scrub: true,
         },
-      },
+      });
+
+      gsap.to(".parallax-fast", {
+        yPercent: -100,
+        ease: "none",
+        scrollTrigger: {
+          trigger: containerRef.current,
+          start: "top bottom",
+          end: "bottom top",
+          scrub: true,
+        },
+      });
+
+      // Stats counter animation
+      if (statsRef.current) {
+        const statNumbers = statsRef.current.querySelectorAll("[data-count]");
+        statNumbers.forEach((stat) => {
+          const target = parseInt(stat.getAttribute("data-count") || "0");
+          gsap.fromTo(
+            stat,
+            {
+              textContent: 0,
+            },
+            {
+              textContent: target,
+              duration: 2,
+              ease: "power2.out",
+              snap: { textContent: 1 },
+              scrollTrigger: {
+                trigger: stat,
+                start: "top 80%",
+                toggleActions: "play none none reverse",
+              },
+            },
+          );
+        });
+      }
+
+      // Feature cards with 3D flip reveal
+      featureCardsRef.current.forEach((card, index) => {
+        if (!card) return;
+
+        gsap.set(card, {
+          rotationY: -90,
+          opacity: 0,
+          transformOrigin: "center center",
+          transformStyle: "preserve-3d",
+        });
+
+        gsap.to(card, {
+          rotationY: 0,
+          opacity: 1,
+          duration: 1.2,
+          delay: index * 0.1,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: card,
+            start: "top 85%",
+            toggleActions: "play none none reverse",
+          },
+        });
+      });
     });
 
-    // Navigation background opacity based on scroll
-    gsap.to(navRef.current, {
-      backgroundColor: "rgba(0, 0, 0, 0.8)",
-      borderColor: "rgba(255, 255, 255, 0.3)",
-      scrollTrigger: {
-        trigger: containerRef.current,
-        start: "100px top",
-        end: "200px top",
-        scrub: 1,
-      },
-    });
-
-    return () => {
-      ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
-    };
+    return () => ctx.revert();
   }, []);
 
-  // ScrollTrigger animations
+  // Feature card hover effects
   useEffect(() => {
-    if (!featuresRef.current) return;
-
-    // Parallax background elements
-    gsap.to(".parallax-slow", {
-      yPercent: -50,
-      ease: "none",
-      scrollTrigger: {
-        trigger: containerRef.current,
-        start: "top bottom",
-        end: "bottom top",
-        scrub: true,
-      },
-    });
-
-    gsap.to(".parallax-fast", {
-      yPercent: -100,
-      ease: "none",
-      scrollTrigger: {
-        trigger: containerRef.current,
-        start: "top bottom",
-        end: "bottom top",
-        scrub: true,
-      },
-    });
-
-    // Stats counter animation
-    if (statsRef.current) {
-      const statNumbers = statsRef.current.querySelectorAll("[data-count]");
-      statNumbers.forEach((stat) => {
-        const target = parseInt(stat.getAttribute("data-count") || "0");
-        gsap.fromTo(
-          stat,
-          {
-            textContent: 0,
-          },
-          {
-            textContent: target,
-            duration: 2,
-            ease: "power2.out",
-            snap: { textContent: 1 },
-            scrollTrigger: {
-              trigger: stat,
-              start: "top 80%",
-              toggleActions: "play none none reverse",
-            },
-          },
-        );
-      });
-    }
-
-    // Feature cards with 3D flip reveal
-    featureCardsRef.current.forEach((card, index) => {
+    featureCardsRef.current.forEach((card) => {
       if (!card) return;
 
-      gsap.set(card, {
-        rotationY: -90,
-        opacity: 0,
-        transformOrigin: "center center",
-        transformStyle: "preserve-3d",
-      });
-
-      gsap.to(card, {
-        rotationY: 0,
-        opacity: 1,
-        duration: 1.2,
-        delay: index * 0.1,
-        ease: "power3.out",
-        scrollTrigger: {
-          trigger: card,
-          start: "top 85%",
-          toggleActions: "play none none reverse",
-        },
-      });
-
-      // Advanced hover animations
       const handleMouseEnter = () => {
         gsap.to(card, {
           scale: 1.05,
@@ -357,7 +353,6 @@ const Index = () => {
           ease: "power2.out",
         });
 
-        // Glow effect
         gsap.to(card.querySelector(".card-glow"), {
           opacity: 0.3,
           scale: 1.1,
@@ -365,7 +360,6 @@ const Index = () => {
           ease: "power2.out",
         });
 
-        // Icon rotation
         gsap.to(card.querySelector(".feature-icon"), {
           rotation: 360,
           scale: 1.2,
@@ -401,11 +395,12 @@ const Index = () => {
 
       card.addEventListener("mouseenter", handleMouseEnter);
       card.addEventListener("mouseleave", handleMouseLeave);
-    });
 
-    return () => {
-      ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
-    };
+      return () => {
+        card.removeEventListener("mouseenter", handleMouseEnter);
+        card.removeEventListener("mouseleave", handleMouseLeave);
+      };
+    });
   }, []);
 
   const addToRefs = (el: HTMLDivElement | null) => {
@@ -441,7 +436,7 @@ const Index = () => {
           className="fixed top-6 left-6 right-6 z-50 backdrop-blur-2xl bg-black/20 border border-white/10 rounded-2xl shadow-2xl transition-all duration-300"
           style={{
             willChange: "transform, background-color, border-color",
-            transform: "translateZ(0)", // Force hardware acceleration
+            transform: "translateZ(0)",
           }}
         >
           <div className="container flex h-20 items-center justify-between px-8">
@@ -455,7 +450,7 @@ const Index = () => {
             </div>
 
             <div className="hidden md:flex items-center space-x-12 text-lg font-medium">
-              {["Features", "Pricing", "Docs"].map((item, index) => (
+              {["Features", "Pricing", "Docs"].map((item) => (
                 <a
                   key={item}
                   href={`/${item.toLowerCase()}`}
@@ -676,13 +671,11 @@ const Index = () => {
                   className="group relative"
                   style={{ transformStyle: "preserve-3d" }}
                 >
-                  {/* Glow Effect */}
                   <div
                     className={`card-glow absolute inset-0 bg-gradient-to-r ${feature.gradient} opacity-0 rounded-3xl blur-xl`}
                   />
 
                   <Card className="relative h-full bg-black/40 border border-white/20 backdrop-blur-xl rounded-3xl p-8 hover:border-white/40 transition-all duration-500 overflow-hidden">
-                    {/* Subtle grid pattern */}
                     <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHZpZXdCb3g9IjAgMCA0MCA0MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZGVmcz48cGF0dGVybiBpZD0iZ3JpZCIgd2lkdGg9IjQwIiBoZWlnaHQ9IjQwIiBwYXR0ZXJuVW5pdHM9InVzZXJTcGFjZU9uVXNlIj48cGF0aCBkPSJNIDQwIDAgTCAwIDAgMCA0MCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJyZ2JhKDI1NSwyNTUsMjU1LDAuMDUpIiBzdHJva2Utd2lkdGg9IjEiLz48L3BhdHRlcm4+PC9kZWZzPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9InVybCgjZ3JpZCkiLz48L3N2Zz4=')] opacity-30" />
 
                     <CardHeader className="relative z-10">
