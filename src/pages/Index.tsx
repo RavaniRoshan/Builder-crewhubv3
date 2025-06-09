@@ -115,34 +115,18 @@ const Index = () => {
   useEffect(() => {
     if (!containerRef.current) return;
 
-    // Set initial states for hero elements only
+    // Set initial states for hero elements only (NOT navigation)
     gsap.set([titleRef.current, subtitleRef.current, ctaRef.current], {
       opacity: 0,
       y: 100,
-      rotationX: 90
-    });
-
-    // Ensure navigation is visible
-    gsap.set(navRef.current, {
-      opacity: 1,
-      y: 0
+      rotationX: 90,
     });
 
     // Create master timeline
-    masterTl.current = gsap.timeline({ delay: 0.5 });
+    masterTl.current = gsap.timeline({ delay: 0.2 });
 
     // Hero entrance animation with 3D effects
     heroTl.current = gsap.timeline();
-
-    // Navigation entrance animation - starts visible, slides down smoothly
-    if (navRef.current) {
-      gsap.from(navRef.current, {
-        y: -100,
-        duration: 1.2,
-        ease: "elastic.out(1, 0.8)",
-        delay: 0.2
-      });
-    }
 
     // Morphing background animation
     if (morphingBgRef.current) {
@@ -436,16 +420,12 @@ const Index = () => {
           <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-gradient-radial from-purple-500/30 to-transparent rounded-full blur-3xl parallax-fast" />
         </div>
 
-        {/* Floating Navigation */}
+        {/* Floating Navigation - Always Visible */}
         <nav
           ref={navRef}
-          className="fixed top-6 left-6 right-6 z-50 backdrop-blur-2xl bg-black/40 border border-white/20 rounded-2xl shadow-2xl transition-all duration-300"
-          style={{
-            willChange: 'transform, background-color, border-color',
-            transform: 'translateZ(0)',
-            opacity: 1
-          }}
+          className="fixed top-6 left-6 right-6 z-50 backdrop-blur-2xl bg-black/50 border border-white/30 rounded-2xl shadow-2xl"
         >
+          <div className="container flex h-20 items-center justify-between px-8">
             <div className="flex items-center space-x-3" data-magnetic>
               <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center">
                 <Network className="w-6 h-6 text-white" />
@@ -460,7 +440,7 @@ const Index = () => {
                 <a
                   key={item}
                   href={`/${item.toLowerCase()}`}
-                  className="relative text-white/70 hover:text-white transition-all duration-300 group"
+                  className="relative text-white/80 hover:text-white transition-all duration-300 group"
                   data-magnetic
                 >
                   {item}
@@ -474,7 +454,7 @@ const Index = () => {
               <Button
                 variant="ghost"
                 size="lg"
-                className="text-white/70 hover:text-white hover:bg-white/10 text-lg"
+                className="text-white/80 hover:text-white hover:bg-white/10 text-lg"
                 data-magnetic
                 onClick={() => (window.location.href = "/signin")}
               >
