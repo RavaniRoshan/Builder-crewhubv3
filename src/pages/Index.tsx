@@ -13,7 +13,6 @@ import {
   useTransform,
   useSpring,
   useMotionValue,
-  useAnimationFrame,
 } from "framer-motion";
 import { ThemeSwitch } from "@/components/theme-switch";
 import {
@@ -69,7 +68,17 @@ const Index = () => {
   const [isHoveringSecondary, setIsHoveringSecondary] = useState(false);
   const [isHoveringHeader, setIsHoveringHeader] = useState(false);
 
-  // GSAP animations for feature cards
+  // Cursor.com style floating animation
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+
+  const handleMouseMove = (event: React.MouseEvent) => {
+    const { clientX, clientY } = event;
+    mouseX.set(clientX);
+    mouseY.set(clientY);
+  };
+
+  // GSAP animations for feature cards only
   useEffect(() => {
     // Clean up function to clear ScrollTrigger instances
     return () => {
@@ -78,29 +87,7 @@ const Index = () => {
   }, []);
 
   useEffect(() => {
-    // Animate the features section header
-    if (featuresRef.current) {
-      const header = featuresRef.current.querySelector(".features-header");
-      if (header) {
-        gsap.fromTo(
-          header,
-          { opacity: 0, y: 50 },
-          {
-            opacity: 1,
-            y: 0,
-            duration: 0.8,
-            ease: "power2.out",
-            scrollTrigger: {
-              trigger: header,
-              start: "top 80%",
-              end: "bottom 20%",
-              toggleActions: "play none none reverse",
-            },
-          },
-        );
-      }
-    }
-
+    // Only animate feature cards with GSAP - no other elements
     if (featureCardsRef.current.length > 0) {
       // Initial state - cards start from below and invisible
       gsap.set(featureCardsRef.current, {
@@ -239,16 +226,6 @@ const Index = () => {
     }
   };
 
-  // Cursor.com style floating animation
-  const mouseX = useMotionValue(0);
-  const mouseY = useMotionValue(0);
-
-  const handleMouseMove = (event: React.MouseEvent) => {
-    const { clientX, clientY } = event;
-    mouseX.set(clientX);
-    mouseY.set(clientY);
-  };
-
   // Animated background dots like Cursor.com
   const AnimatedDots = () => {
     return (
@@ -258,12 +235,20 @@ const Index = () => {
             key={i}
             className="absolute w-1 h-1 bg-white/20 rounded-full"
             initial={{
-              x: Math.random() * window.innerWidth,
-              y: Math.random() * window.innerHeight,
+              x:
+                Math.random() *
+                (typeof window !== "undefined" ? window.innerWidth : 1000),
+              y:
+                Math.random() *
+                (typeof window !== "undefined" ? window.innerHeight : 1000),
             }}
             animate={{
-              x: Math.random() * window.innerWidth,
-              y: Math.random() * window.innerHeight,
+              x:
+                Math.random() *
+                (typeof window !== "undefined" ? window.innerWidth : 1000),
+              y:
+                Math.random() *
+                (typeof window !== "undefined" ? window.innerHeight : 1000),
             }}
             transition={{
               duration: Math.random() * 10 + 10,
@@ -535,14 +520,8 @@ const Index = () => {
         </motion.div>
       </section>
 
-      {/* Stats Section with Scroll Animation */}
-      <motion.section
-        className="py-24 bg-black border-t border-white/10"
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        transition={{ duration: 0.8 }}
-        viewport={{ once: true, margin: "-100px" }}
-      >
+      {/* Stats Section - using regular CSS animations to avoid conflicts */}
+      <section className="py-24 bg-black border-t border-white/10">
         <div className="container">
           <div className="mx-auto max-w-7xl">
             <div className="grid grid-cols-2 gap-8 md:grid-cols-4">
@@ -552,35 +531,28 @@ const Index = () => {
                 { title: "Active Users", value: "10K+", delay: 0.2 },
                 { title: "Uptime", value: "99.9%", delay: 0.3 },
               ].map((stat, index) => (
-                <motion.div
+                <div
                   key={stat.title}
-                  className="text-center group cursor-pointer"
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6, delay: stat.delay }}
-                  viewport={{ once: true }}
-                  whileHover={{ scale: 1.05, y: -5 }}
+                  className="text-center group cursor-pointer hover:scale-105 hover:-translate-y-2 transition-all duration-300"
                 >
-                  <motion.div
-                    className="text-4xl font-bold text-white mb-2"
-                    whileHover={{ color: "#60a5fa" }}
-                  >
+                  <div className="text-4xl font-bold text-white mb-2 group-hover:text-blue-400 transition-colors">
                     {stat.value}
-                  </motion.div>
+                  </div>
                   <div className="text-sm text-white/60 group-hover:text-white/80 transition-colors">
                     {stat.title}
                   </div>
-                </motion.div>
+                </div>
               ))}
             </div>
           </div>
         </div>
-      </motion.section>
+      </section>
 
       {/* Features Section with GSAP Animation */}
       <section
         id="features"
         className="py-32 bg-gradient-to-b from-black to-gray-900"
+        ref={featuresRef}
       >
         <div className="container">
           <div className="features-header mx-auto max-w-2xl text-center mb-20">
@@ -594,7 +566,7 @@ const Index = () => {
             </p>
           </div>
 
-          <div className="mx-auto max-w-7xl" ref={featuresRef}>
+          <div className="mx-auto max-w-7xl">
             <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
               {[
                 {
@@ -678,16 +650,10 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Target Users Section */}
+      {/* Target Users Section - using simple CSS animations */}
       <section className="py-32 bg-gray-900">
         <div className="container">
-          <motion.div
-            className="mx-auto max-w-2xl text-center mb-20"
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
-          >
+          <div className="mx-auto max-w-2xl text-center mb-20">
             <h2 className="text-4xl font-bold tracking-tight sm:text-5xl mb-6 text-white">
               Built for teams that build the future
             </h2>
@@ -695,7 +661,7 @@ const Index = () => {
               From startups to enterprises, CrewHub empowers teams across
               industries to leverage AI effectively.
             </p>
-          </motion.div>
+          </div>
 
           <div className="mx-auto max-w-7xl">
             <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
@@ -734,25 +700,16 @@ const Index = () => {
                   ],
                 },
               ].map((user, index) => (
-                <motion.div
+                <div
                   key={user.title}
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6, delay: index * 0.2 }}
-                  viewport={{ once: true }}
-                  whileHover={{ scale: 1.02, rotateX: 5 }}
-                  className="group"
+                  className="group hover:scale-105 hover:rotate-x-2 transition-all duration-300"
                 >
                   <Card className="h-full bg-white/5 backdrop-blur-sm border border-white/10 hover:bg-white/10 hover:border-white/20 transition-all duration-300">
                     <CardHeader>
                       <div className="flex items-center space-x-3 mb-4">
-                        <motion.div
-                          className="flex h-12 w-12 items-center justify-center rounded-xl bg-white/10"
-                          whileHover={{ rotate: 360, scale: 1.1 }}
-                          transition={{ duration: 0.6 }}
-                        >
+                        <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-white/10 group-hover:rotate-360 group-hover:scale-110 transition-all duration-600">
                           <user.icon className="h-6 w-6 text-white group-hover:text-purple-400 transition-colors" />
-                        </motion.div>
+                        </div>
                         <CardTitle className="text-xl text-white group-hover:text-purple-400 transition-colors">
                           {user.title}
                         </CardTitle>
@@ -764,23 +721,20 @@ const Index = () => {
                     <CardContent>
                       <ul className="space-y-3">
                         {user.features.map((feature, i) => (
-                          <motion.li
+                          <li
                             key={i}
                             className="flex items-center gap-3 text-sm"
-                            initial={{ opacity: 0, x: -10 }}
-                            whileInView={{ opacity: 1, x: 0 }}
-                            transition={{ delay: 0.1 * i }}
                           >
                             <CheckCircle className="h-4 w-4 text-green-400 flex-shrink-0" />
                             <span className="text-white/60 group-hover:text-white/80 transition-colors">
                               {feature}
                             </span>
-                          </motion.li>
+                          </li>
                         ))}
                       </ul>
                     </CardContent>
                   </Card>
-                </motion.div>
+                </div>
               ))}
             </div>
           </div>
@@ -790,13 +744,7 @@ const Index = () => {
       {/* CTA Section */}
       <section className="py-32 bg-black">
         <div className="container">
-          <motion.div
-            className="mx-auto max-w-4xl text-center"
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
-          >
+          <div className="mx-auto max-w-4xl text-center">
             <h2 className="text-4xl font-bold tracking-tight sm:text-5xl mb-6 text-white">
               Ready to transform your AI workflow?
             </h2>
@@ -864,7 +812,7 @@ const Index = () => {
             <p className="text-sm text-white/40">
               14-day free trial • No credit card required • Setup in minutes
             </p>
-          </motion.div>
+          </div>
         </div>
       </section>
 
