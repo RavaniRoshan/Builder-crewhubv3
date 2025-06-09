@@ -7,7 +7,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { motion } from "framer-motion";
+import { motion, useScroll, useTransform, useSpring } from "framer-motion";
 import { ThemeSwitch } from "@/components/theme-switch";
 import {
   Bot,
@@ -28,90 +28,148 @@ import {
   TrendingUp,
   Globe,
   Layers,
+  Sparkles,
+  Play,
 } from "lucide-react";
+import { useRef } from "react";
 
 const Index = () => {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start start", "end end"],
+  });
+
+  const smoothProgress = useSpring(scrollYProgress, {
+    damping: 30,
+    stiffness: 100,
+  });
+
+  const heroY = useTransform(smoothProgress, [0, 0.3], [0, -100]);
+  const heroOpacity = useTransform(smoothProgress, [0, 0.2], [1, 0]);
+  const headerOpacity = useTransform(smoothProgress, [0, 0.1], [0.95, 1]);
+
   return (
-    <div className="min-h-screen bg-background">
-      {/* Navigation */}
-      <nav className="border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 sticky top-0 z-50">
-        <div className="container flex h-16 items-center">
-          <div className="mr-4 flex items-center space-x-2">
+    <div ref={containerRef} className="min-h-screen bg-background">
+      {/* Fixed Navigation with Glass Effect */}
+      <motion.nav
+        style={{ opacity: headerOpacity }}
+        className="fixed top-0 left-0 right-0 z-50 border-b border-border/40 bg-background/80 backdrop-blur-xl supports-[backdrop-filter]:bg-background/60"
+      >
+        <div className="container flex h-16 items-center justify-between">
+          <motion.div
+            className="flex items-center space-x-2"
+            whileHover={{ scale: 1.05 }}
+            transition={{ type: "spring", stiffness: 400 }}
+          >
             <img
               src="/crewhub-logo.png"
               alt="CrewHub Logo"
               className="h-10 w-10 rounded-full"
             />
-            <span className="font-bold text-xl">CrewHub</span>
+            <span className="font-bold text-xl bg-gradient-to-r from-primary to-blue-600 bg-clip-text text-transparent">
+              CrewHub
+            </span>
+          </motion.div>
+
+          <div className="hidden md:flex items-center space-x-8 text-sm font-medium">
+            <motion.a
+              href="/features"
+              className="transition-colors hover:text-primary relative group"
+              whileHover={{ y: -2 }}
+            >
+              Features
+              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary transition-all group-hover:w-full"></span>
+            </motion.a>
+            <motion.a
+              href="/pricing"
+              className="transition-colors hover:text-primary relative group"
+              whileHover={{ y: -2 }}
+            >
+              Pricing
+              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary transition-all group-hover:w-full"></span>
+            </motion.a>
+            <motion.a
+              href="/about"
+              className="transition-colors hover:text-primary relative group"
+              whileHover={{ y: -2 }}
+            >
+              About
+              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary transition-all group-hover:w-full"></span>
+            </motion.a>
           </div>
-          <div className="flex flex-1 items-center justify-between space-x-2 md:justify-end">
-            <nav className="flex items-center space-x-6 text-sm font-medium">
-              <a
-                href="/features"
-                className="transition-colors hover:text-foreground/80"
-              >
-                Features
-              </a>
-              <a
-                href="/pricing"
-                className="transition-colors hover:text-foreground/80"
-              >
-                Pricing
-              </a>
-              <a
-                href="/about"
-                className="transition-colors hover:text-foreground/80"
-              >
-                About
-              </a>
-            </nav>
-            <div className="flex items-center space-x-2">
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => (window.location.href = "/signin")}
-              >
-                Sign In
-              </Button>
+
+          <div className="flex items-center space-x-3">
+            <ThemeSwitch />
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => (window.location.href = "/signin")}
+              className="hidden sm:inline-flex"
+            >
+              Sign In
+            </Button>
+            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
               <Button
                 size="sm"
                 onClick={() => (window.location.href = "/signup")}
+                className="bg-gradient-to-r from-primary to-blue-600 hover:from-primary/90 hover:to-blue-600/90"
               >
                 Get Started
               </Button>
-            </div>
+            </motion.div>
           </div>
         </div>
-      </nav>
+      </motion.nav>
 
-      {/* Hero Section */}
-      <section className="relative overflow-hidden py-24 lg:py-32">
-        <div className="container relative">
-          <div className="mx-auto max-w-4xl text-center">
+      {/* Hero Section with Parallax */}
+      <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+        {/* Animated Background */}
+        <motion.div className="absolute inset-0 -z-10" style={{ y: heroY }}>
+          <div className="absolute inset-0 bg-gradient-to-br from-blue-50/20 via-indigo-50/10 to-purple-50/20 dark:from-blue-950/20 dark:via-indigo-950/10 dark:to-purple-950/20" />
+          <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-purple-400/10 rounded-full blur-3xl animate-pulse" />
+          <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-blue-400/10 rounded-full blur-3xl animate-pulse delay-1000" />
+        </motion.div>
+
+        <motion.div
+          className="container relative z-10"
+          style={{ y: heroY, opacity: heroOpacity }}
+        >
+          <div className="mx-auto max-w-6xl text-center">
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
+              transition={{ duration: 0.8, delay: 0.2 }}
             >
-              <Badge className="mb-4" variant="secondary">
-                🚀 Now in Beta - Join the AI Revolution
+              <Badge
+                className="mb-6 border-primary/20 bg-primary/10 text-primary hover:bg-primary/20 transition-colors"
+                variant="outline"
+              >
+                <Sparkles className="w-3 h-3 mr-2" />
+                Now in Beta - Join the AI Revolution
               </Badge>
             </motion.div>
 
             <motion.h1
-              className="text-4xl font-bold tracking-tight sm:text-6xl lg:text-7xl"
-              initial={{ opacity: 0, y: 30 }}
+              className="text-5xl font-bold tracking-tight sm:text-7xl lg:text-8xl mb-8"
+              initial={{ opacity: 0, y: 40 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: 0.2 }}
+              transition={{ duration: 0.8, delay: 0.3 }}
             >
-              Orchestrate AI Agents Like Never Before
+              <span className="bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 dark:from-gray-100 dark:via-white dark:to-gray-100 bg-clip-text text-transparent">
+                Orchestrate AI Agents
+              </span>
+              <br />
+              <span className="bg-gradient-to-r from-primary via-blue-600 to-purple-600 bg-clip-text text-transparent">
+                Like Never Before
+              </span>
             </motion.h1>
 
             <motion.p
-              className="mt-6 text-lg leading-8 text-muted-foreground max-w-2xl mx-auto"
-              initial={{ opacity: 0, y: 20 }}
+              className="text-xl leading-8 text-muted-foreground max-w-3xl mx-auto mb-12"
+              initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.4 }}
+              transition={{ duration: 0.8, delay: 0.5 }}
             >
               CrewHub is the comprehensive platform for assembling, configuring,
               and managing teams of specialized AI agents and tools. Build
@@ -119,97 +177,118 @@ const Index = () => {
             </motion.p>
 
             <motion.div
-              className="mt-10 flex items-center justify-center gap-x-6"
-              initial={{ opacity: 0, y: 20 }}
+              className="flex flex-col sm:flex-row items-center justify-center gap-6 mb-12"
+              initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.6 }}
+              transition={{ duration: 0.8, delay: 0.7 }}
             >
-              <Button
-                size="lg"
-                className="h-12 px-8 hover:scale-105 transition-transform duration-200"
-                onClick={() => (window.location.href = "/dashboard")}
+              <motion.div
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
               >
-                Start Building <ArrowRight className="ml-2 h-4 w-4" />
-              </Button>
-              <Button
-                variant="outline"
-                size="lg"
-                className="h-12 px-8 hover:scale-105 transition-transform duration-200"
+                <Button
+                  size="lg"
+                  className="h-14 px-8 text-lg bg-gradient-to-r from-primary to-blue-600 hover:from-primary/90 hover:to-blue-600/90 shadow-lg shadow-primary/25"
+                  onClick={() => (window.location.href = "/dashboard")}
+                >
+                  Start Building <ArrowRight className="ml-2 h-5 w-5" />
+                </Button>
+              </motion.div>
+
+              <motion.div
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
               >
-                Watch Demo
-              </Button>
+                <Button
+                  variant="outline"
+                  size="lg"
+                  className="h-14 px-8 text-lg border-2 hover:bg-primary/5"
+                >
+                  <Play className="mr-2 h-5 w-5" />
+                  Watch Demo
+                </Button>
+              </motion.div>
             </motion.div>
 
             <motion.div
-              className="mt-8 flex items-center justify-center gap-x-8 text-sm text-muted-foreground"
+              className="flex items-center justify-center gap-8 text-sm text-muted-foreground"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ duration: 0.6, delay: 0.8 }}
+              transition={{ duration: 0.8, delay: 0.9 }}
             >
-              <div className="flex items-center gap-x-2">
+              <div className="flex items-center gap-2">
                 <CheckCircle className="h-4 w-4 text-green-500" />
                 Free trial available
               </div>
-              <div className="flex items-center gap-x-2">
+              <div className="flex items-center gap-2">
                 <CheckCircle className="h-4 w-4 text-green-500" />
                 No credit card required
               </div>
             </motion.div>
           </div>
-        </div>
-        {/* Background gradient */}
-        <div className="absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-80">
-          <div className="relative left-[calc(50%-11rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 rotate-[30deg] bg-gradient-to-tr from-[#ff80b5] to-[#9089fc] opacity-20 sm:left-[calc(50%-30rem)] sm:w-[72.1875rem]"></div>
-        </div>
+        </motion.div>
       </section>
 
-      {/* Stats Section */}
-      <section className="py-16 bg-muted/50">
+      {/* Stats Section with Scroll Animation */}
+      <motion.section
+        className="py-24 bg-muted/30"
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        transition={{ duration: 0.8 }}
+        viewport={{ once: true, margin: "-100px" }}
+      >
         <div className="container">
           <div className="mx-auto max-w-7xl">
             <div className="grid grid-cols-2 gap-8 md:grid-cols-4">
-              <div className="text-center">
-                <div className="text-3xl font-bold text-primary">500+</div>
-                <div className="text-sm text-muted-foreground">
-                  AI Models Integrated
-                </div>
-              </div>
-              <div className="text-center">
-                <div className="text-3xl font-bold text-primary">50K+</div>
-                <div className="text-sm text-muted-foreground">
-                  Workflows Created
-                </div>
-              </div>
-              <div className="text-center">
-                <div className="text-3xl font-bold text-primary">10K+</div>
-                <div className="text-sm text-muted-foreground">
-                  Active Users
-                </div>
-              </div>
-              <div className="text-center">
-                <div className="text-3xl font-bold text-primary">99.9%</div>
-                <div className="text-sm text-muted-foreground">Uptime</div>
-              </div>
+              {[
+                { title: "AI Models Integrated", value: "500+", delay: 0 },
+                { title: "Workflows Created", value: "50K+", delay: 0.1 },
+                { title: "Active Users", value: "10K+", delay: 0.2 },
+                { title: "Uptime", value: "99.9%", delay: 0.3 },
+              ].map((stat, index) => (
+                <motion.div
+                  key={stat.title}
+                  className="text-center"
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: stat.delay }}
+                  viewport={{ once: true }}
+                  whileHover={{ scale: 1.05 }}
+                >
+                  <div className="text-4xl font-bold text-primary mb-2">
+                    {stat.value}
+                  </div>
+                  <div className="text-sm text-muted-foreground">
+                    {stat.title}
+                  </div>
+                </motion.div>
+              ))}
             </div>
           </div>
         </div>
-      </section>
+      </motion.section>
 
-      {/* Features Section */}
-      <section id="features" className="py-24">
+      {/* Features Section with Staggered Animation */}
+      <section id="features" className="py-32">
         <div className="container">
-          <div className="mx-auto max-w-2xl text-center">
-            <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
+          <motion.div
+            className="mx-auto max-w-2xl text-center mb-20"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            viewport={{ once: true }}
+          >
+            <h2 className="text-4xl font-bold tracking-tight sm:text-5xl mb-6">
               Everything you need to manage AI agents
             </h2>
-            <p className="mt-4 text-lg text-muted-foreground">
+            <p className="text-xl text-muted-foreground">
               From agent configuration to workflow orchestration, CrewHub
               provides all the tools you need to harness the power of AI
               collaboration.
             </p>
-          </div>
+          </motion.div>
 
-          <div className="mx-auto mt-16 max-w-7xl">
+          <div className="mx-auto max-w-7xl">
             <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
               {[
                 {
@@ -251,22 +330,29 @@ const Index = () => {
               ].map((feature, index) => (
                 <motion.div
                   key={feature.title}
-                  initial={{ opacity: 0, y: 20 }}
+                  initial={{ opacity: 0, y: 30 }}
                   whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
+                  transition={{ duration: 0.6, delay: index * 0.1 }}
                   viewport={{ once: true }}
+                  whileHover={{ y: -5, transition: { duration: 0.2 } }}
                 >
-                  <Card className="border-2 hover:border-primary/50 hover:shadow-lg hover:scale-105 transition-all duration-300 cursor-pointer group">
+                  <Card className="h-full border-2 border-border/50 hover:border-primary/50 hover:shadow-xl hover:shadow-primary/10 transition-all duration-300 bg-card/50 backdrop-blur-sm">
                     <CardHeader>
-                      <div className="flex items-center space-x-2">
-                        <div className="flex h-10 w-10 items-center justify-center rounded-md bg-primary/10 group-hover:bg-primary/20 transition-colors">
-                          <feature.icon className="h-5 w-5 text-primary group-hover:scale-110 transition-transform" />
-                        </div>
-                        <CardTitle className="group-hover:text-primary transition-colors">
+                      <div className="flex items-center space-x-3 mb-4">
+                        <motion.div
+                          className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-primary/20 to-blue-600/20 border border-primary/20"
+                          whileHover={{ scale: 1.1, rotate: 5 }}
+                          transition={{ type: "spring", stiffness: 300 }}
+                        >
+                          <feature.icon className="h-6 w-6 text-primary" />
+                        </motion.div>
+                        <CardTitle className="text-xl">
                           {feature.title}
                         </CardTitle>
                       </div>
-                      <CardDescription>{feature.description}</CardDescription>
+                      <CardDescription className="text-base leading-relaxed">
+                        {feature.description}
+                      </CardDescription>
                     </CardHeader>
                   </Card>
                 </motion.div>
@@ -277,398 +363,459 @@ const Index = () => {
       </section>
 
       {/* Target Users Section */}
-      <section className="py-24 bg-muted/50">
+      <section className="py-32 bg-muted/30">
         <div className="container">
-          <div className="mx-auto max-w-2xl text-center">
-            <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
+          <motion.div
+            className="mx-auto max-w-2xl text-center mb-20"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            viewport={{ once: true }}
+          >
+            <h2 className="text-4xl font-bold tracking-tight sm:text-5xl mb-6">
               Built for teams that build the future
             </h2>
-            <p className="mt-4 text-lg text-muted-foreground">
+            <p className="text-xl text-muted-foreground">
               From startups to enterprises, CrewHub empowers teams across
               industries to leverage AI effectively.
             </p>
-          </div>
+          </motion.div>
 
-          <div className="mx-auto mt-16 max-w-7xl">
+          <div className="mx-auto max-w-7xl">
             <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
-              <Card>
-                <CardHeader>
-                  <div className="flex items-center space-x-2">
-                    <Code className="h-8 w-8 text-primary" />
-                    <CardTitle>Development Teams</CardTitle>
-                  </div>
-                  <CardDescription>
-                    Accelerate development cycles with AI-powered code
-                    generation, testing, and deployment workflows.
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <ul className="space-y-2 text-sm text-muted-foreground">
-                    <li className="flex items-center gap-2">
-                      <CheckCircle className="h-4 w-4 text-green-500" />
-                      Code review automation
-                    </li>
-                    <li className="flex items-center gap-2">
-                      <CheckCircle className="h-4 w-4 text-green-500" />
-                      Bug detection & fixing
-                    </li>
-                    <li className="flex items-center gap-2">
-                      <CheckCircle className="h-4 w-4 text-green-500" />
-                      Documentation generation
-                    </li>
-                  </ul>
-                </CardContent>
-              </Card>
-
-              <Card>
-                <CardHeader>
-                  <div className="flex items-center space-x-2">
-                    <Lightbulb className="h-8 w-8 text-primary" />
-                    <CardTitle>Content Agencies</CardTitle>
-                  </div>
-                  <CardDescription>
-                    Scale content creation with specialized agents for writing,
-                    editing, and multimedia production.
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <ul className="space-y-2 text-sm text-muted-foreground">
-                    <li className="flex items-center gap-2">
-                      <CheckCircle className="h-4 w-4 text-green-500" />
-                      Multi-format content creation
-                    </li>
-                    <li className="flex items-center gap-2">
-                      <CheckCircle className="h-4 w-4 text-green-500" />
-                      Brand consistency checks
-                    </li>
-                    <li className="flex items-center gap-2">
-                      <CheckCircle className="h-4 w-4 text-green-500" />
-                      SEO optimization
-                    </li>
-                  </ul>
-                </CardContent>
-              </Card>
-
-              <Card>
-                <CardHeader>
-                  <div className="flex items-center space-x-2">
-                    <Building className="h-8 w-8 text-primary" />
-                    <CardTitle>Enterprise Teams</CardTitle>
-                  </div>
-                  <CardDescription>
-                    Transform business processes with enterprise-grade AI
-                    workflows and governance controls.
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <ul className="space-y-2 text-sm text-muted-foreground">
-                    <li className="flex items-center gap-2">
-                      <CheckCircle className="h-4 w-4 text-green-500" />
-                      Process automation
-                    </li>
-                    <li className="flex items-center gap-2">
-                      <CheckCircle className="h-4 w-4 text-green-500" />
-                      Data analysis workflows
-                    </li>
-                    <li className="flex items-center gap-2">
-                      <CheckCircle className="h-4 w-4 text-green-500" />
-                      Compliance monitoring
-                    </li>
-                  </ul>
-                </CardContent>
-              </Card>
+              {[
+                {
+                  icon: Code,
+                  title: "Development Teams",
+                  description:
+                    "Accelerate development cycles with AI-powered code generation, testing, and deployment workflows.",
+                  features: [
+                    "Code review automation",
+                    "Bug detection & fixing",
+                    "Documentation generation",
+                  ],
+                },
+                {
+                  icon: Lightbulb,
+                  title: "Content Agencies",
+                  description:
+                    "Scale content creation with specialized agents for writing, editing, and multimedia production.",
+                  features: [
+                    "Multi-format content creation",
+                    "Brand consistency checks",
+                    "SEO optimization",
+                  ],
+                },
+                {
+                  icon: Building,
+                  title: "Enterprise Teams",
+                  description:
+                    "Transform business processes with enterprise-grade AI workflows and governance controls.",
+                  features: [
+                    "Process automation",
+                    "Data analysis workflows",
+                    "Compliance monitoring",
+                  ],
+                },
+              ].map((user, index) => (
+                <motion.div
+                  key={user.title}
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: index * 0.2 }}
+                  viewport={{ once: true }}
+                  whileHover={{ scale: 1.02 }}
+                >
+                  <Card className="h-full bg-card/80 backdrop-blur-sm border-2 border-border/50 hover:border-primary/30 transition-all duration-300">
+                    <CardHeader>
+                      <div className="flex items-center space-x-3 mb-4">
+                        <motion.div
+                          className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-primary/20 to-blue-600/20"
+                          whileHover={{ rotate: 360 }}
+                          transition={{ duration: 0.6 }}
+                        >
+                          <user.icon className="h-6 w-6 text-primary" />
+                        </motion.div>
+                        <CardTitle className="text-xl">{user.title}</CardTitle>
+                      </div>
+                      <CardDescription className="text-base mb-6">
+                        {user.description}
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      <ul className="space-y-3">
+                        {user.features.map((feature, i) => (
+                          <motion.li
+                            key={i}
+                            className="flex items-center gap-3 text-sm"
+                            initial={{ opacity: 0, x: -10 }}
+                            whileInView={{ opacity: 1, x: 0 }}
+                            transition={{ delay: 0.1 * i }}
+                          >
+                            <CheckCircle className="h-4 w-4 text-green-500 flex-shrink-0" />
+                            {feature}
+                          </motion.li>
+                        ))}
+                      </ul>
+                    </CardContent>
+                  </Card>
+                </motion.div>
+              ))}
             </div>
           </div>
         </div>
       </section>
 
       {/* Benefits Section */}
-      <section className="py-24">
+      <section className="py-32">
         <div className="container">
           <div className="mx-auto max-w-7xl">
-            <div className="grid grid-cols-1 gap-16 lg:grid-cols-2 lg:gap-24">
-              <div>
-                <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
+            <div className="grid grid-cols-1 gap-20 lg:grid-cols-2 lg:gap-32 items-center">
+              <motion.div
+                initial={{ opacity: 0, x: -30 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.8 }}
+                viewport={{ once: true }}
+              >
+                <h2 className="text-4xl font-bold tracking-tight sm:text-5xl mb-6">
                   Why choose CrewHub?
                 </h2>
-                <p className="mt-4 text-lg text-muted-foreground">
+                <p className="text-xl text-muted-foreground mb-10">
                   Experience the next generation of AI collaboration with
                   features designed for modern teams.
                 </p>
 
-                <div className="mt-8 space-y-6">
-                  <div className="flex items-start space-x-4">
-                    <div className="flex h-8 w-8 items-center justify-center rounded-md bg-primary/10">
-                      <Rocket className="h-4 w-4 text-primary" />
-                    </div>
-                    <div>
-                      <h3 className="font-semibold">10x Faster Development</h3>
-                      <p className="text-sm text-muted-foreground">
-                        Reduce project timelines with intelligent agent
-                        orchestration and automated workflows.
-                      </p>
-                    </div>
-                  </div>
+                <div className="space-y-8">
+                  {[
+                    {
+                      icon: Rocket,
+                      title: "10x Faster Development",
+                      description:
+                        "Reduce project timelines with intelligent agent orchestration and automated workflows.",
+                    },
+                    {
+                      icon: Shield,
+                      title: "Enterprise Security",
+                      description:
+                        "Bank-level security with role-based access, audit logs, and compliance features.",
+                    },
+                    {
+                      icon: Share2,
+                      title: "Open Ecosystem",
+                      description:
+                        "Integrate with any AI model or tool. Build custom agents and share with the community.",
+                    },
+                  ].map((benefit, index) => (
+                    <motion.div
+                      key={benefit.title}
+                      className="flex items-start space-x-4"
+                      initial={{ opacity: 0, y: 20 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      transition={{ delay: index * 0.2 }}
+                      viewport={{ once: true }}
+                    >
+                      <motion.div
+                        className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-primary/20 to-blue-600/20 flex-shrink-0"
+                        whileHover={{ scale: 1.1 }}
+                      >
+                        <benefit.icon className="h-6 w-6 text-primary" />
+                      </motion.div>
+                      <div>
+                        <h3 className="font-semibold text-lg mb-2">
+                          {benefit.title}
+                        </h3>
+                        <p className="text-muted-foreground">
+                          {benefit.description}
+                        </p>
+                      </div>
+                    </motion.div>
+                  ))}
+                </div>
+              </motion.div>
 
-                  <div className="flex items-start space-x-4">
-                    <div className="flex h-8 w-8 items-center justify-center rounded-md bg-primary/10">
-                      <Shield className="h-4 w-4 text-primary" />
-                    </div>
-                    <div>
-                      <h3 className="font-semibold">Enterprise Security</h3>
-                      <p className="text-sm text-muted-foreground">
-                        Bank-level security with role-based access, audit logs,
-                        and compliance features.
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="flex items-start space-x-4">
-                    <div className="flex h-8 w-8 items-center justify-center rounded-md bg-primary/10">
-                      <Share2 className="h-4 w-4 text-primary" />
-                    </div>
-                    <div>
-                      <h3 className="font-semibold">Open Ecosystem</h3>
-                      <p className="text-sm text-muted-foreground">
-                        Integrate with any AI model or tool. Build custom agents
-                        and share with the community.
-                      </p>
-                    </div>
+              <motion.div
+                className="relative"
+                initial={{ opacity: 0, x: 30 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.8 }}
+                viewport={{ once: true }}
+              >
+                <div className="relative p-8 bg-gradient-to-br from-primary/10 via-blue-600/10 to-purple-600/10 rounded-3xl border border-primary/20 backdrop-blur-sm">
+                  <div className="space-y-8">
+                    {[
+                      {
+                        title: "Workflow Efficiency",
+                        value: "+245%",
+                        color: "bg-primary",
+                      },
+                      {
+                        title: "Cost Reduction",
+                        value: "-60%",
+                        color: "bg-green-500",
+                      },
+                      {
+                        title: "Team Productivity",
+                        value: "+180%",
+                        color: "bg-blue-500",
+                      },
+                    ].map((metric, index) => (
+                      <motion.div
+                        key={metric.title}
+                        className="flex items-center justify-between"
+                        initial={{ opacity: 0, scale: 0.8 }}
+                        whileInView={{ opacity: 1, scale: 1 }}
+                        transition={{ delay: index * 0.1 }}
+                        viewport={{ once: true }}
+                      >
+                        <span className="text-sm text-muted-foreground">
+                          {metric.title}
+                        </span>
+                        <span className="font-semibold text-lg">
+                          {metric.value}
+                        </span>
+                      </motion.div>
+                    ))}
                   </div>
                 </div>
-              </div>
-
-              <div className="relative">
-                <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-secondary/20 rounded-2xl"></div>
-                <div className="relative p-8 bg-card rounded-2xl border">
-                  <div className="space-y-6">
-                    <div className="flex items-center justify-between">
-                      <span className="text-sm text-muted-foreground">
-                        Workflow Efficiency
-                      </span>
-                      <span className="font-semibold">+245%</span>
-                    </div>
-                    <div className="h-2 bg-muted rounded-full overflow-hidden">
-                      <div className="h-full w-3/4 bg-primary rounded-full"></div>
-                    </div>
-
-                    <div className="flex items-center justify-between">
-                      <span className="text-sm text-muted-foreground">
-                        Cost Reduction
-                      </span>
-                      <span className="font-semibold">-60%</span>
-                    </div>
-                    <div className="h-2 bg-muted rounded-full overflow-hidden">
-                      <div className="h-full w-2/3 bg-green-500 rounded-full"></div>
-                    </div>
-
-                    <div className="flex items-center justify-between">
-                      <span className="text-sm text-muted-foreground">
-                        Team Productivity
-                      </span>
-                      <span className="font-semibold">+180%</span>
-                    </div>
-                    <div className="h-2 bg-muted rounded-full overflow-hidden">
-                      <div className="h-full w-4/5 bg-blue-500 rounded-full"></div>
-                    </div>
-                  </div>
-                </div>
-              </div>
+              </motion.div>
             </div>
           </div>
         </div>
       </section>
 
       {/* Pricing Preview */}
-      <section id="pricing" className="py-24 bg-muted/50">
+      <section id="pricing" className="py-32 bg-muted/30">
         <div className="container">
-          <div className="mx-auto max-w-2xl text-center">
-            <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
+          <motion.div
+            className="mx-auto max-w-2xl text-center mb-20"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            viewport={{ once: true }}
+          >
+            <h2 className="text-4xl font-bold tracking-tight sm:text-5xl mb-6">
               Simple, transparent pricing
             </h2>
-            <p className="mt-4 text-lg text-muted-foreground">
+            <p className="text-xl text-muted-foreground">
               Start free and scale as you grow. No hidden fees, no surprises.
             </p>
-          </div>
+          </motion.div>
 
-          <div className="mx-auto mt-16 max-w-5xl">
+          <div className="mx-auto max-w-6xl">
             <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
-              <Card>
-                <CardHeader>
-                  <CardTitle>Starter</CardTitle>
-                  <CardDescription>
-                    Perfect for individuals and small teams
-                  </CardDescription>
-                  <div className="text-3xl font-bold">Free</div>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <ul className="space-y-2 text-sm">
-                    <li className="flex items-center gap-2">
-                      <CheckCircle className="h-4 w-4 text-green-500" />
-                      Up to 3 AI agents
-                    </li>
-                    <li className="flex items-center gap-2">
-                      <CheckCircle className="h-4 w-4 text-green-500" />
-                      Basic workflow builder
-                    </li>
-                    <li className="flex items-center gap-2">
-                      <CheckCircle className="h-4 w-4 text-green-500" />
-                      Community support
-                    </li>
-                  </ul>
-                  <Button className="w-full" variant="outline">
-                    Get Started
-                  </Button>
-                </CardContent>
-              </Card>
+              {[
+                {
+                  name: "Starter",
+                  price: "Free",
+                  description: "Perfect for individuals and small teams",
+                  features: [
+                    "Up to 3 AI agents",
+                    "Basic workflow builder",
+                    "Community support",
+                  ],
+                  cta: "Get Started",
+                  popular: false,
+                },
+                {
+                  name: "Professional",
+                  price: "$49/month",
+                  description: "For growing teams and businesses",
+                  features: [
+                    "Unlimited AI agents",
+                    "Advanced workflows",
+                    "Priority support",
+                    "Team collaboration",
+                  ],
+                  cta: "Start Free Trial",
+                  popular: true,
+                },
+                {
+                  name: "Enterprise",
+                  price: "Custom",
+                  description: "For large organizations",
+                  features: [
+                    "Everything in Professional",
+                    "SSO & security",
+                    "Dedicated support",
+                    "Custom integrations",
+                  ],
+                  cta: "Contact Sales",
+                  popular: false,
+                },
+              ].map((plan, index) => (
+                <motion.div
+                  key={plan.name}
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: index * 0.1 }}
+                  viewport={{ once: true }}
+                  whileHover={{ scale: plan.popular ? 1.02 : 1.05 }}
+                  className={plan.popular ? "scale-105" : ""}
+                >
+                  <Card
+                    className={`h-full ${plan.popular ? "border-primary shadow-2xl shadow-primary/20" : "border-border/50"} bg-card/80 backdrop-blur-sm`}
+                  >
+                    <CardHeader>
+                      <div className="flex items-center justify-between mb-4">
+                        <CardTitle className="text-2xl">{plan.name}</CardTitle>
+                        {plan.popular && (
+                          <Badge className="bg-gradient-to-r from-primary to-blue-600">
+                            Most Popular
+                          </Badge>
+                        )}
+                      </div>
+                      <CardDescription className="text-base">
+                        {plan.description}
+                      </CardDescription>
+                      <div className="text-4xl font-bold mt-6">
+                        {plan.price}
+                      </div>
+                    </CardHeader>
 
-              <Card className="border-primary shadow-lg scale-105">
-                <CardHeader>
-                  <div className="flex items-center gap-2">
-                    <CardTitle>Professional</CardTitle>
-                    <Badge>Most Popular</Badge>
-                  </div>
-                  <CardDescription>
-                    For growing teams and businesses
-                  </CardDescription>
-                  <div className="text-3xl font-bold">
-                    $49
-                    <span className="text-sm font-normal text-muted-foreground">
-                      /month
-                    </span>
-                  </div>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <ul className="space-y-2 text-sm">
-                    <li className="flex items-center gap-2">
-                      <CheckCircle className="h-4 w-4 text-green-500" />
-                      Unlimited AI agents
-                    </li>
-                    <li className="flex items-center gap-2">
-                      <CheckCircle className="h-4 w-4 text-green-500" />
-                      Advanced workflows
-                    </li>
-                    <li className="flex items-center gap-2">
-                      <CheckCircle className="h-4 w-4 text-green-500" />
-                      Team collaboration
-                    </li>
-                    <li className="flex items-center gap-2">
-                      <CheckCircle className="h-4 w-4 text-green-500" />
-                      Priority support
-                    </li>
-                  </ul>
-                  <Button className="w-full">Start Free Trial</Button>
-                </CardContent>
-              </Card>
+                    <CardContent className="space-y-6">
+                      <ul className="space-y-3">
+                        {plan.features.map((feature, i) => (
+                          <li
+                            key={i}
+                            className="flex items-center gap-3 text-sm"
+                          >
+                            <CheckCircle className="h-4 w-4 text-green-500" />
+                            {feature}
+                          </li>
+                        ))}
+                      </ul>
 
-              <Card>
-                <CardHeader>
-                  <CardTitle>Enterprise</CardTitle>
-                  <CardDescription>For large organizations</CardDescription>
-                  <div className="text-3xl font-bold">Custom</div>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <ul className="space-y-2 text-sm">
-                    <li className="flex items-center gap-2">
-                      <CheckCircle className="h-4 w-4 text-green-500" />
-                      Everything in Professional
-                    </li>
-                    <li className="flex items-center gap-2">
-                      <CheckCircle className="h-4 w-4 text-green-500" />
-                      SSO & advanced security
-                    </li>
-                    <li className="flex items-center gap-2">
-                      <CheckCircle className="h-4 w-4 text-green-500" />
-                      Custom integrations
-                    </li>
-                    <li className="flex items-center gap-2">
-                      <CheckCircle className="h-4 w-4 text-green-500" />
-                      Dedicated support
-                    </li>
-                  </ul>
-                  <Button className="w-full" variant="outline">
-                    Contact Sales
-                  </Button>
-                </CardContent>
-              </Card>
+                      <motion.div
+                        whileHover={{ scale: 1.02 }}
+                        whileTap={{ scale: 0.98 }}
+                      >
+                        <Button
+                          className={`w-full ${plan.popular ? "bg-gradient-to-r from-primary to-blue-600" : ""}`}
+                          variant={plan.popular ? "default" : "outline"}
+                          onClick={() => {
+                            if (plan.name === "Enterprise") {
+                              window.location.href = "/contact";
+                            } else {
+                              window.location.href = "/signup";
+                            }
+                          }}
+                        >
+                          {plan.cta}
+                        </Button>
+                      </motion.div>
+                    </CardContent>
+                  </Card>
+                </motion.div>
+              ))}
             </div>
           </div>
         </div>
       </section>
 
       {/* CTA Section */}
-      <section className="py-24">
+      <section className="py-32">
         <div className="container">
-          <div className="mx-auto max-w-2xl text-center">
-            <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
+          <motion.div
+            className="mx-auto max-w-4xl text-center"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            viewport={{ once: true }}
+          >
+            <h2 className="text-4xl font-bold tracking-tight sm:text-5xl mb-6">
               Ready to transform your AI workflow?
             </h2>
-            <p className="mt-4 text-lg text-muted-foreground">
+            <p className="text-xl text-muted-foreground mb-12">
               Join thousands of teams already using CrewHub to build the future
               with AI.
             </p>
-            <div className="flex items-center space-x-2">
-              <ThemeSwitch />
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => (window.location.href = "/signin")}
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-6 mb-8">
+              <motion.div
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
               >
-                Sign In
-              </Button>
-              <Button
-                size="sm"
-                onClick={() => (window.location.href = "/signup")}
+                <Button
+                  size="lg"
+                  className="h-14 px-8 text-lg bg-gradient-to-r from-primary to-blue-600 hover:from-primary/90 hover:to-blue-600/90 shadow-xl shadow-primary/25"
+                  onClick={() => (window.location.href = "/signup")}
+                >
+                  Start Your Free Trial <ArrowRight className="ml-2 h-5 w-5" />
+                </Button>
+              </motion.div>
+              <motion.div
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
               >
-                Get Started
-              </Button>
+                <Button
+                  variant="outline"
+                  size="lg"
+                  className="h-14 px-8 text-lg border-2"
+                  onClick={() => (window.location.href = "/contact")}
+                >
+                  Schedule Demo
+                </Button>
+              </motion.div>
             </div>
-            <p className="mt-4 text-sm text-muted-foreground">
+            <p className="text-sm text-muted-foreground">
               14-day free trial • No credit card required • Setup in minutes
             </p>
-          </div>
+          </motion.div>
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="border-t bg-muted/50">
-        <div className="container py-16">
-          <div className="grid grid-cols-1 gap-8 md:grid-cols-4">
-            <div className="space-y-4">
+      <footer className="border-t bg-muted/50 backdrop-blur-sm">
+        <div className="container py-20">
+          <div className="grid grid-cols-1 gap-12 md:grid-cols-4">
+            <div className="space-y-6">
               <div className="flex items-center space-x-2">
                 <img
                   src="/crewhub-logo.png"
                   alt="CrewHub Logo"
                   className="h-10 w-10 rounded-full"
                 />
-                <span className="font-bold text-xl">CrewHub</span>
+                <span className="font-bold text-xl bg-gradient-to-r from-primary to-blue-600 bg-clip-text text-transparent">
+                  CrewHub
+                </span>
               </div>
-              <p className="text-sm text-muted-foreground">
+              <p className="text-sm text-muted-foreground leading-relaxed">
                 The comprehensive platform for AI agent and MCP management.
                 Build, collaborate, and scale with AI.
               </p>
             </div>
 
             <div>
-              <h3 className="font-semibold mb-4">Product</h3>
-              <ul className="space-y-2 text-sm text-muted-foreground">
+              <h3 className="font-semibold mb-6">Product</h3>
+              <ul className="space-y-3 text-sm text-muted-foreground">
                 <li>
-                  <a href="/features" className="hover:text-foreground">
+                  <a
+                    href="/features"
+                    className="hover:text-foreground transition-colors"
+                  >
                     Features
                   </a>
                 </li>
                 <li>
-                  <a href="/pricing" className="hover:text-foreground">
+                  <a
+                    href="/pricing"
+                    className="hover:text-foreground transition-colors"
+                  >
                     Pricing
                   </a>
                 </li>
                 <li>
-                  <a href="/docs" className="hover:text-foreground">
+                  <a
+                    href="/docs"
+                    className="hover:text-foreground transition-colors"
+                  >
                     Documentation
                   </a>
                 </li>
                 <li>
-                  <a href="/api" className="hover:text-foreground">
+                  <a
+                    href="/api"
+                    className="hover:text-foreground transition-colors"
+                  >
                     API
                   </a>
                 </li>
@@ -676,25 +823,37 @@ const Index = () => {
             </div>
 
             <div>
-              <h3 className="font-semibold mb-4">Company</h3>
-              <ul className="space-y-2 text-sm text-muted-foreground">
+              <h3 className="font-semibold mb-6">Company</h3>
+              <ul className="space-y-3 text-sm text-muted-foreground">
                 <li>
-                  <a href="/about" className="hover:text-foreground">
+                  <a
+                    href="/about"
+                    className="hover:text-foreground transition-colors"
+                  >
                     About
                   </a>
                 </li>
                 <li>
-                  <a href="/blog" className="hover:text-foreground">
+                  <a
+                    href="/blog"
+                    className="hover:text-foreground transition-colors"
+                  >
                     Blog
                   </a>
                 </li>
                 <li>
-                  <a href="/careers" className="hover:text-foreground">
+                  <a
+                    href="/careers"
+                    className="hover:text-foreground transition-colors"
+                  >
                     Careers
                   </a>
                 </li>
                 <li>
-                  <a href="/contact" className="hover:text-foreground">
+                  <a
+                    href="/contact"
+                    className="hover:text-foreground transition-colors"
+                  >
                     Contact
                   </a>
                 </li>
@@ -702,25 +861,37 @@ const Index = () => {
             </div>
 
             <div>
-              <h3 className="font-semibold mb-4">Support</h3>
-              <ul className="space-y-2 text-sm text-muted-foreground">
+              <h3 className="font-semibold mb-6">Support</h3>
+              <ul className="space-y-3 text-sm text-muted-foreground">
                 <li>
-                  <a href="/help" className="hover:text-foreground">
+                  <a
+                    href="/help"
+                    className="hover:text-foreground transition-colors"
+                  >
                     Help Center
                   </a>
                 </li>
                 <li>
-                  <a href="/community" className="hover:text-foreground">
+                  <a
+                    href="/community"
+                    className="hover:text-foreground transition-colors"
+                  >
                     Community
                   </a>
                 </li>
                 <li>
-                  <a href="/status" className="hover:text-foreground">
+                  <a
+                    href="/status"
+                    className="hover:text-foreground transition-colors"
+                  >
                     Status
                   </a>
                 </li>
                 <li>
-                  <a href="/security" className="hover:text-foreground">
+                  <a
+                    href="/security"
+                    className="hover:text-foreground transition-colors"
+                  >
                     Security
                   </a>
                 </li>
@@ -728,18 +899,27 @@ const Index = () => {
             </div>
           </div>
 
-          <div className="mt-16 border-t pt-8 flex items-center justify-between">
+          <div className="mt-16 border-t pt-8 flex flex-col sm:flex-row items-center justify-between gap-4">
             <p className="text-sm text-muted-foreground">
               © 2024 CrewHub. All rights reserved.
             </p>
-            <div className="flex items-center space-x-4 text-sm text-muted-foreground">
-              <a href="/privacy" className="hover:text-foreground">
+            <div className="flex items-center space-x-6 text-sm text-muted-foreground">
+              <a
+                href="/privacy"
+                className="hover:text-foreground transition-colors"
+              >
                 Privacy
               </a>
-              <a href="/terms" className="hover:text-foreground">
+              <a
+                href="/terms"
+                className="hover:text-foreground transition-colors"
+              >
                 Terms
               </a>
-              <a href="/cookies" className="hover:text-foreground">
+              <a
+                href="/cookies"
+                className="hover:text-foreground transition-colors"
+              >
                 Cookies
               </a>
             </div>
