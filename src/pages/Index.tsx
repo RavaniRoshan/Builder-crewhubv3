@@ -444,7 +444,6 @@ const Index = () => {
         className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 dark:bg-black text-gray-900 dark:text-white overflow-hidden relative"
         style={{ perspective: '1000px' }}
       >
-      >
         {/* Morphing Background */}
         <div
           ref={morphingBgRef}
