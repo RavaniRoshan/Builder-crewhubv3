@@ -441,8 +441,8 @@ const Index = () => {
 
       <div
         ref={containerRef}
-        className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 dark:bg-black text-black dark:text-white overflow-hidden relative"
-        style={{ perspective: "1000px" }}
+        className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 dark:bg-black overflow-hidden relative"
+        style={{ perspective: "1000px", color: "rgb(0, 0, 0)" }}
       >
         {/* Morphing Background */}
         <div
@@ -457,7 +457,7 @@ const Index = () => {
         {/* Enhanced Floating Navigation */}
         <nav
           ref={navRef}
-          className="fixed top-6 left-6 right-6 z-50 backdrop-blur-2xl bg-white/80 dark:bg-black/50 border border-gray-300/60 dark:border-white/30 rounded-2xl shadow-xl dark:shadow-2xl transition-all duration-500"
+          className="fixed top-6 left-6 right-6 z-50 backdrop-blur-2xl bg-white/80 border border-gray-300/60 rounded-2xl shadow-xl transition-all duration-500"
           style={{
             willChange: "transform, background-color, border-color, box-shadow",
             transformStyle: "preserve-3d",
@@ -470,19 +470,19 @@ const Index = () => {
               </div>
               <span
                 className="font-bold text-2xl"
-                style={{ color: 'rgb(0, 0, 0)' }}
+                style={{ color: "rgb(0, 0, 0)" }}
               >
                 CrewHub
               </span>
             </div>
 
             <div className="hidden md:flex items-center space-x-12 text-lg font-medium">
-              {['Features', 'Pricing', 'Docs'].map((item) => (
+              {["Features", "Pricing", "Docs"].map((item) => (
                 <a
                   key={item}
                   href={`/${item.toLowerCase()}`}
                   className="relative transition-all duration-300 group"
-                  style={{ color: 'rgb(0, 0, 0)' }}
+                  style={{ color: "rgb(0, 0, 0)" }}
                   data-magnetic
                 >
                   {item}
@@ -497,7 +497,7 @@ const Index = () => {
                 variant="ghost"
                 size="lg"
                 className="hover:bg-gray-100/80 text-lg"
-                style={{ color: 'rgb(0, 0, 0)' }}
+                style={{ color: "rgb(0, 0, 0)" }}
                 data-magnetic
                 onClick={() => (window.location.href = "/signin")}
               >
@@ -524,7 +524,7 @@ const Index = () => {
           <div className="container relative z-10 text-center max-w-6xl">
             <Badge
               className="mb-8 bg-white/90 border-gray-400 backdrop-blur-sm text-lg px-6 py-3 rounded-full shadow-lg animate-pulse"
-              style={{ color: 'rgb(0, 0, 0)' }}
+              style={{ color: "rgb(0, 0, 0)" }}
             >
               <Bot className="w-5 h-5 mr-2" />
               AI Agent & MCP Management Platform
@@ -534,12 +534,13 @@ const Index = () => {
               ref={titleRef}
               className="text-7xl md:text-9xl font-black mb-8 leading-tight"
               style={{
-                color: 'rgb(0, 0, 0)',
-                background: 'linear-gradient(45deg, #000000, #3b82f6, #8b5cf6, #000000)',
-                backgroundSize: '300% 300%',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-                animation: 'gradient 3s ease infinite'
+                color: "rgb(0, 0, 0)",
+                background:
+                  "linear-gradient(45deg, #000000, #3b82f6, #8b5cf6, #000000)",
+                backgroundSize: "300% 300%",
+                WebkitBackgroundClip: "text",
+                WebkitTextFillColor: "transparent",
+                animation: "gradient 3s ease infinite",
               }}
             >
               Orchestrate AI Teams
@@ -548,7 +549,7 @@ const Index = () => {
             <p
               ref={subtitleRef}
               className="text-2xl md:text-3xl max-w-4xl mx-auto mb-16 leading-relaxed"
-              style={{ color: 'rgb(0, 0, 0)' }}
+              style={{ color: "rgb(0, 0, 0)" }}
             >
               The collaborative workspace where AI agents, tools, and teams
               unite. Build, manage, and deploy intelligent workflows at scale.
@@ -575,7 +576,7 @@ const Index = () => {
                 variant="outline"
                 size="lg"
                 className="cta-button h-16 px-12 text-xl border-2 border-gray-400 hover:bg-gray-100 rounded-2xl backdrop-blur-sm transition-all duration-300"
-                style={{ color: 'rgb(0, 0, 0)' }}
+                style={{ color: "rgb(0, 0, 0)" }}
                 data-magnetic
                 onClick={() => (window.location.href = "/demo")}
               >
@@ -586,7 +587,7 @@ const Index = () => {
 
             <div
               className="flex items-center justify-center gap-8 text-sm mt-8"
-              style={{ color: 'rgb(0, 0, 0)' }}
+              style={{ color: "rgb(0, 0, 0)" }}
             >
               <div className="flex items-center gap-2">
                 <CheckCircle className="h-4 w-4 text-green-500" />
@@ -608,7 +609,7 @@ const Index = () => {
             {[...Array(50)].map((_, i) => (
               <div
                 key={i}
-                className="absolute w-1 h-1 bg-gray-500/80 dark:bg-white/30 rounded-full animate-pulse"
+                className="absolute w-1 h-1 bg-gray-500/80 rounded-full animate-pulse"
                 style={{
                   left: `${Math.random() * 100}%`,
                   top: `${Math.random() * 100}%`,
@@ -631,11 +632,17 @@ const Index = () => {
                 { label: "Teams Collaborating", value: 500, suffix: "+" },
               ].map((stat, index) => (
                 <div key={stat.label} className="text-center group">
-                  <div className="text-6xl font-black mb-4 font-mono" style={{ color: 'rgb(0, 0, 0)' }}>
+                  <div
+                    className="text-6xl font-black mb-4 font-mono"
+                    style={{ color: "rgb(0, 0, 0)" }}
+                  >
                     <span data-count={stat.value}>0</span>
                     <span>{stat.suffix}</span>
                   </div>
-                  <div className="text-xl group-hover:text-gray-800 transition-colors" style={{ color: 'rgb(0, 0, 0)' }}>
+                  <div
+                    className="text-xl group-hover:text-gray-800 transition-colors"
+                    style={{ color: "rgb(0, 0, 0)" }}
+                  >
                     {stat.label}
                   </div>
                 </div>
@@ -648,13 +655,21 @@ const Index = () => {
         <section ref={featuresRef} className="py-32 relative">
           <div className="container">
             <div className="text-center mb-20">
-              <h2 className="text-6xl font-black mb-8" style={{ color: 'rgb(0, 0, 0)' }}>
+              <h2
+                className="text-6xl font-black mb-8"
+                style={{ color: "rgb(0, 0, 0)" }}
+              >
                 Everything You Need to Manage AI Teams
               </h2>
-              <p className="text-2xl max-w-4xl mx-auto" style={{ color: 'rgb(0, 0, 0)' }}>
-                From agent catalogs to workflow orchestration, CrewHub provides all the tools for intelligent collaboration
+              <p
+                className="text-2xl max-w-4xl mx-auto"
+                style={{ color: "rgb(0, 0, 0)" }}
+              >
+                From agent catalogs to workflow orchestration, CrewHub provides
+                all the tools for intelligent collaboration
               </p>
             </div>
+
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
               {[
                 {
@@ -710,8 +725,8 @@ const Index = () => {
                     className={`card-glow absolute inset-0 bg-gradient-to-r ${feature.gradient} opacity-0 rounded-3xl blur-xl`}
                   />
 
-                  <Card className="relative h-full bg-white/90 dark:bg-black/40 border border-gray-300 dark:border-white/20 backdrop-blur-xl rounded-3xl p-8 hover:border-gray-400 dark:hover:border-white/40 transition-all duration-500 overflow-hidden shadow-lg hover:shadow-xl">
-                    <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHZpZXdCb3g9IjAgMCA0MCA0MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZGVmcz48cGF0dGVybiBpZD0iZ3JpZCIgd2lkdGg9IjQwIiBoZWlnaHQ9IjQwIiBwYXR0ZXJuVW5pdHM9InVzZXJTcGFjZU9uVXNlIj48cGF0aCBkPSJNIDQwIDAgTCAwIDAgMCA0MCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJyZ2JhKDI1NSwyNTUsMjU1LDAuMDUpIiBzdHJva2Utd2lkdGg9IjEiLz48L3BhdHRlcm4+PC9kZWZzPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9InVybCgjZ3JpZCkiLz48L3N2Zz4=')] opacity-30 dark:opacity-20" />
+                  <Card className="relative h-full bg-white/90 border border-gray-300 backdrop-blur-xl rounded-3xl p-8 hover:border-gray-400 transition-all duration-500 overflow-hidden shadow-lg hover:shadow-xl">
+                    <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHZpZXdCb3g9IjAgMCA0MCA0MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZGVmcz48cGF0dGVybiBpZD0iZ3JpZCIgd2lkdGg9IjQwIiBoZWlnaHQ9IjQwIiBwYXR0ZXJuVW5pdHM9InVzZXJTcGFjZU9uVXNlIj48cGF0aCBkPSJNIDQwIDAgTCAwIDAgMCA0MCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJyZ2JhKDI1NSwyNTUsMjU1LDAuMDUpIiBzdHJva2Utd2lkdGg9IjEiLz48L3BhdHRlcm4+PC9kZWZzPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9InVybCgjZ3JpZCkiLz48L3N2Zz4=')] opacity-30" />
 
                     <CardHeader className="relative z-10">
                       <div className="flex items-center space-x-4 mb-6">
@@ -722,11 +737,17 @@ const Index = () => {
                         </div>
                       </div>
 
-                      <CardTitle className="text-2xl font-bold mb-4 group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:from-blue-600 group-hover:to-purple-600 group-hover:bg-clip-text transition-all duration-300" style={{ color: 'rgb(0, 0, 0)' }}>
+                      <CardTitle
+                        className="text-2xl font-bold mb-4 group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:from-blue-600 group-hover:to-purple-600 group-hover:bg-clip-text transition-all duration-300"
+                        style={{ color: "rgb(0, 0, 0)" }}
+                      >
                         {feature.title}
                       </CardTitle>
 
-                      <CardDescription className="text-lg leading-relaxed group-hover:text-gray-800 transition-colors duration-300" style={{ color: 'rgb(0, 0, 0)' }}>
+                      <CardDescription
+                        className="text-lg leading-relaxed group-hover:text-gray-800 transition-colors duration-300"
+                        style={{ color: "rgb(0, 0, 0)" }}
+                      >
                         {feature.description}
                       </CardDescription>
                     </CardHeader>
@@ -738,16 +759,24 @@ const Index = () => {
         </section>
 
         {/* Target Users Section - Fixed Light Mode Background */}
-        <section className="py-32 relative bg-white dark:bg-gray-900">
+        <section className="py-32 relative bg-white">
           <div className="container">
             <div className="text-center mb-20">
-              <h2 className="text-6xl font-black mb-8" style={{ color: 'rgb(0, 0, 0)' }}>
+              <h2
+                className="text-6xl font-black mb-8"
+                style={{ color: "rgb(0, 0, 0)" }}
+              >
                 Built for Teams That Build Tomorrow
               </h2>
-              <p className="text-2xl max-w-4xl mx-auto" style={{ color: 'rgb(0, 0, 0)' }}>
-                From development teams to enterprise innovation departments, CrewHub empowers organizations to harness AI collaboration
+              <p
+                className="text-2xl max-w-4xl mx-auto"
+                style={{ color: "rgb(0, 0, 0)" }}
+              >
+                From development teams to enterprise innovation departments,
+                CrewHub empowers organizations to harness AI collaboration
               </p>
             </div>
+
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-7xl mx-auto">
               {[
                 {
@@ -788,7 +817,7 @@ const Index = () => {
                   key={user.title}
                   className="group hover:scale-105 transition-all duration-300"
                 >
-                  <Card className="h-full bg-white dark:bg-black/40 border border-gray-300 dark:border-white/20 backdrop-blur-xl rounded-3xl p-8 hover:border-gray-400 dark:hover:border-white/40 transition-all duration-500 shadow-lg hover:shadow-xl">
+                  <Card className="h-full bg-white border border-gray-300 backdrop-blur-xl rounded-3xl p-8 hover:border-gray-400 transition-all duration-500 shadow-lg hover:shadow-xl">
                     <CardHeader>
                       <div className="flex items-center space-x-4 mb-6">
                         <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl flex items-center justify-center group-hover:rotate-12 group-hover:scale-110 transition-all duration-500">
@@ -796,11 +825,17 @@ const Index = () => {
                         </div>
                       </div>
 
-                      <CardTitle className="text-2xl font-bold mb-4 group-hover:text-blue-600 transition-colors" style={{ color: 'rgb(0, 0, 0)' }}>
+                      <CardTitle
+                        className="text-2xl font-bold mb-4 group-hover:text-blue-600 transition-colors"
+                        style={{ color: "rgb(0, 0, 0)" }}
+                      >
                         {user.title}
                       </CardTitle>
 
-                      <CardDescription className="text-lg mb-6 group-hover:text-gray-800 transition-colors" style={{ color: 'rgb(0, 0, 0)' }}>
+                      <CardDescription
+                        className="text-lg mb-6 group-hover:text-gray-800 transition-colors"
+                        style={{ color: "rgb(0, 0, 0)" }}
+                      >
                         {user.description}
                       </CardDescription>
                     </CardHeader>
@@ -810,7 +845,10 @@ const Index = () => {
                         {user.features.map((feature, i) => (
                           <li key={i} className="flex items-center gap-3">
                             <CheckCircle className="h-5 w-5 text-green-500 flex-shrink-0" />
-                            <span className="group-hover:text-gray-800 transition-colors" style={{ color: 'rgb(0, 0, 0)' }}>
+                            <span
+                              className="group-hover:text-gray-800 transition-colors"
+                              style={{ color: "rgb(0, 0, 0)" }}
+                            >
                               {feature}
                             </span>
                           </li>
@@ -827,12 +865,20 @@ const Index = () => {
         {/* CTA Section */}
         <section className="py-32 relative">
           <div className="container text-center">
-            <h2 className="text-6xl font-black mb-8" style={{ color: 'rgb(0, 0, 0)' }}>
+            <h2
+              className="text-6xl font-black mb-8"
+              style={{ color: "rgb(0, 0, 0)" }}
+            >
               Ready to Orchestrate AI Excellence?
             </h2>
-            <p className="text-2xl mb-16 max-w-3xl mx-auto" style={{ color: 'rgb(0, 0, 0)' }}>
-              Join thousands of teams building the future with intelligent agent collaboration
+            <p
+              className="text-2xl mb-16 max-w-3xl mx-auto"
+              style={{ color: "rgb(0, 0, 0)" }}
+            >
+              Join thousands of teams building the future with intelligent agent
+              collaboration
             </p>
+
             <div className="flex flex-col sm:flex-row items-center justify-center gap-8">
               <Button
                 size="lg"
@@ -850,7 +896,7 @@ const Index = () => {
                 variant="outline"
                 size="lg"
                 className="h-20 px-16 text-2xl border-2 border-gray-400 hover:bg-gray-100 rounded-3xl backdrop-blur-sm transition-all duration-300"
-                style={{ color: 'rgb(0, 0, 0)' }}
+                style={{ color: "rgb(0, 0, 0)" }}
                 data-magnetic
                 onClick={() => (window.location.href = "/contact")}
               >
@@ -861,8 +907,9 @@ const Index = () => {
               </Button>
             </div>
 
-            <p className="text-lg mt-8" style={{ color: 'rgb(0, 0, 0)' }}>
-              14-day free trial • No credit card required • GitHub-like collaboration
+            <p className="text-lg mt-8" style={{ color: "rgb(0, 0, 0)" }}>
+              14-day free trial • No credit card required • GitHub-like
+              collaboration
             </p>
           </div>
         </section>
@@ -876,36 +923,60 @@ const Index = () => {
                   <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center">
                     <Network className="w-6 h-6 text-white" />
                   </div>
-                  <span className="font-bold text-2xl" style={{ color: 'rgb(0, 0, 0)' }}>CrewHub</span>
+                  <span
+                    className="font-bold text-2xl"
+                    style={{ color: "rgb(0, 0, 0)" }}
+                  >
+                    CrewHub
+                  </span>
                 </div>
-                <p className="leading-relaxed" style={{ color: 'rgb(0, 0, 0)' }}>
-                  The comprehensive platform for AI agent and MCP management. Build, collaborate, and scale intelligent workflows.
+                <p
+                  className="leading-relaxed"
+                  style={{ color: "rgb(0, 0, 0)" }}
+                >
+                  The comprehensive platform for AI agent and MCP management.
+                  Build, collaborate, and scale intelligent workflows.
                 </p>
               </div>
 
               {[
                 {
                   title: "Platform",
-                  links: ["Agent Catalog", "Workflow Builder", "Team Collaboration", "Analytics Dashboard"]
+                  links: [
+                    "Agent Catalog",
+                    "Workflow Builder",
+                    "Team Collaboration",
+                    "Analytics Dashboard",
+                  ],
                 },
                 {
                   title: "Resources",
-                  links: ["Documentation", "API Reference", "Community", "Blog"]
+                  links: [
+                    "Documentation",
+                    "API Reference",
+                    "Community",
+                    "Blog",
+                  ],
                 },
                 {
                   title: "Company",
-                  links: ["About", "Careers", "Contact", "Enterprise"]
-                }
+                  links: ["About", "Careers", "Contact", "Enterprise"],
+                },
               ].map((section) => (
                 <div key={section.title}>
-                  <h3 className="font-bold mb-6 text-lg" style={{ color: 'rgb(0, 0, 0)' }}>{section.title}</h3>
+                  <h3
+                    className="font-bold mb-6 text-lg"
+                    style={{ color: "rgb(0, 0, 0)" }}
+                  >
+                    {section.title}
+                  </h3>
                   <ul className="space-y-4">
                     {section.links.map((link) => (
                       <li key={link}>
                         <a
-                          href={`/${link.toLowerCase().replace(' ', '-')}`}
+                          href={`/${link.toLowerCase().replace(" ", "-")}`}
                           className="hover:text-gray-800 transition-colors duration-300"
-                          style={{ color: 'rgb(0, 0, 0)' }}
+                          style={{ color: "rgb(0, 0, 0)" }}
                         >
                           {link}
                         </a>
@@ -917,10 +988,10 @@ const Index = () => {
             </div>
 
             <div className="mt-16 pt-8 border-t border-gray-300 text-center">
-              <p style={{ color: 'rgb(0, 0, 0)' }}>
-                © 2024 CrewHub. Orchestrating AI excellence for teams worldwide.
+              <p style={{ color: "rgb(0, 0, 0)" }}>
+                © 2024 CrewHub. Orchestrating AI excellence for teams
+                worldwide.
               </p>
-            </div>
             </div>
           </div>
         </footer>
