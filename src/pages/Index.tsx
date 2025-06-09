@@ -247,10 +247,10 @@ const Index = () => {
             y: progress * -10,
             scale: 1 - progress * 0.02,
             duration: 0.3,
-            ease: "power2.out"
+            ease: "power2.out",
           });
-        }
-      }
+        },
+      },
     });
 
     // Navigation background opacity based on scroll
@@ -261,12 +261,12 @@ const Index = () => {
         trigger: containerRef.current,
         start: "100px top",
         end: "200px top",
-        scrub: 1
-      }
+        scrub: 1,
+      },
     });
 
     return () => {
-      ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+      ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
     };
   }, []);
 
@@ -440,8 +440,8 @@ const Index = () => {
           ref={navRef}
           className="fixed top-6 left-6 right-6 z-50 backdrop-blur-2xl bg-black/20 border border-white/10 rounded-2xl shadow-2xl transition-all duration-300"
           style={{
-            willChange: 'transform, background-color, border-color',
-            transform: 'translateZ(0)' // Force hardware acceleration
+            willChange: "transform, background-color, border-color",
+            transform: "translateZ(0)", // Force hardware acceleration
           }}
         >
           <div className="container flex h-20 items-center justify-between px-8">
@@ -495,8 +495,7 @@ const Index = () => {
         <section
           ref={heroRef}
           className="min-h-screen flex items-center justify-center relative pt-32"
-          style={{ transformStyle: 'preserve-3d' }}
-        >
+          style={{ transformStyle: "preserve-3d" }}
         >
           <div className="container relative z-10 text-center max-w-6xl">
             <Badge className="mb-8 bg-white/10 border-white/20 text-white backdrop-blur-sm text-lg px-6 py-3 rounded-full shadow-lg animate-pulse">
