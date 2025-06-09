@@ -115,11 +115,17 @@ const Index = () => {
   useEffect(() => {
     if (!containerRef.current) return;
 
-    // Set initial states
+    // Set initial states for hero elements only
     gsap.set([titleRef.current, subtitleRef.current, ctaRef.current], {
       opacity: 0,
       y: 100,
-      rotationX: 90,
+      rotationX: 90
+    });
+
+    // Ensure navigation is visible
+    gsap.set(navRef.current, {
+      opacity: 1,
+      y: 0
     });
 
     // Create master timeline
@@ -128,14 +134,15 @@ const Index = () => {
     // Hero entrance animation with 3D effects
     heroTl.current = gsap.timeline();
 
-    // Navigation slide down with elastic effect
+    // Navigation entrance animation - starts visible, slides down smoothly
     if (navRef.current) {
-      heroTl.current.from(navRef.current, {
+      gsap.from(navRef.current, {
         y: -100,
-        opacity: 0,
         duration: 1.2,
         ease: "elastic.out(1, 0.8)",
+        delay: 0.2
       });
+    }
     }
 
     // Morphing background animation
@@ -433,13 +440,13 @@ const Index = () => {
         {/* Floating Navigation */}
         <nav
           ref={navRef}
-          className="fixed top-6 left-6 right-6 z-50 backdrop-blur-2xl bg-black/20 border border-white/10 rounded-2xl shadow-2xl transition-all duration-300"
+          className="fixed top-6 left-6 right-6 z-50 backdrop-blur-2xl bg-black/40 border border-white/20 rounded-2xl shadow-2xl transition-all duration-300"
           style={{
-            willChange: "transform, background-color, border-color",
-            transform: "translateZ(0)",
+            willChange: 'transform, background-color, border-color',
+            transform: 'translateZ(0)',
+            opacity: 1
           }}
         >
-          <div className="container flex h-20 items-center justify-between px-8">
             <div className="flex items-center space-x-3" data-magnetic>
               <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center">
                 <Network className="w-6 h-6 text-white" />
