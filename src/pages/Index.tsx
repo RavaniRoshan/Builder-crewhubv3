@@ -225,30 +225,63 @@ const Index = () => {
   // All ScrollTrigger animations in one effect
   useEffect(() => {
     const ctx = gsap.context(() => {
-      // Navigation scroll animation
+      // Enhanced floating navigation animation
       if (navRef.current) {
+        // Background and blur changes on scroll
         gsap.to(navRef.current, {
-          backgroundColor: "rgba(0, 0, 0, 0.8)",
-          borderColor: "rgba(255, 255, 255, 0.3)",
-          backdropFilter: "blur(30px)",
+          backgroundColor: "rgba(0, 0, 0, 0.85)",
+          borderColor: "rgba(255, 255, 255, 0.4)",
+          backdropFilter: "blur(40px)",
           scrollTrigger: {
             trigger: containerRef.current,
             start: "100px top",
-            end: "200px top",
-            scrub: 1,
-          },
+            end: "300px top",
+            scrub: 1
+          }
         });
 
+        // Dynamic floating movement - more pronounced
         gsap.to(navRef.current, {
-          y: -5,
-          scale: 0.98,
+          y: -15,
+          scale: 0.96,
+          rotationX: 2,
           scrollTrigger: {
             trigger: containerRef.current,
             start: "top top",
             end: "bottom bottom",
-            scrub: 1,
-          },
+            scrub: 1.5,
+            onUpdate: (self) => {
+              const progress = self.progress;
+              // Create wave-like floating motion
+              const floatY = Math.sin(progress * Math.PI * 4) * 8;
+              gsap.set(navRef.current, {
+                y: -15 + floatY,
+                rotationX: 2 + Math.sin(progress * Math.PI * 2) * 1,
+              });
+            }
+          }
         });
+
+        // Additional micro-movement for continuous floating feel
+        gsap.to(navRef.current, {
+          y: "+=5",
+          duration: 3,
+          ease: "sine.inOut",
+          repeat: -1,
+          yoyo: true
+        });
+
+        // Shadow intensity based on scroll
+        gsap.to(navRef.current, {
+          boxShadow: "rgba(0, 0, 0, 0.4) 0px 25px 50px -12px",
+          scrollTrigger: {
+            trigger: containerRef.current,
+            start: "200px top",
+            end: "400px top",
+            scrub: 1
+          }
+        });
+      }
       }
 
       // Parallax background elements
@@ -420,10 +453,14 @@ const Index = () => {
           <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-gradient-radial from-purple-500/30 to-transparent rounded-full blur-3xl parallax-fast" />
         </div>
 
-        {/* Floating Navigation - Always Visible */}
+        {/* Enhanced Floating Navigation */}
         <nav
           ref={navRef}
-          className="fixed top-6 left-6 right-6 z-50 backdrop-blur-2xl bg-black/50 border border-white/30 rounded-2xl shadow-2xl"
+          className="fixed top-6 left-6 right-6 z-50 backdrop-blur-2xl bg-black/50 border border-white/30 rounded-2xl shadow-2xl transition-all duration-500"
+          style={{
+            willChange: 'transform, background-color, border-color, box-shadow',
+            transformStyle: 'preserve-3d'
+          }}
         >
           <div className="container flex h-20 items-center justify-between px-8">
             <div className="flex items-center space-x-3" data-magnetic>
@@ -816,7 +853,7 @@ const Index = () => {
             </div>
 
             <p className="text-lg text-white/50 mt-8">
-              14-day free trial • No credit card required • GitHub-like
+              14-day free trial �� No credit card required • GitHub-like
               collaboration
             </p>
           </div>
