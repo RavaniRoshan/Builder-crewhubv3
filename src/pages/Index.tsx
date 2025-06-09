@@ -104,12 +104,12 @@ const Index = () => {
       className="min-h-screen bg-background"
       onMouseMove={handleMouseMove}
     >
-      {/* Fixed Navigation with Glass Effect */}
+      {/* Fixed Navigation with Enhanced Glass Effect */}
       <motion.nav
         style={{ opacity: headerOpacity }}
-        className="fixed top-0 left-0 right-0 z-50 border-b border-white/10 bg-black/80 backdrop-blur-xl supports-[backdrop-filter]:bg-black/60"
+        className="fixed top-4 left-4 right-4 z-50 rounded-2xl border border-white/20 bg-black/40 backdrop-blur-3xl supports-[backdrop-filter]:bg-black/20 shadow-2xl shadow-black/50"
       >
-        <div className="container flex h-16 items-center justify-between">
+        <div className="container flex h-16 items-center justify-between px-8">
           <motion.div
             className="flex items-center space-x-2"
             whileHover={{ scale: 1.05 }}
@@ -184,15 +184,23 @@ const Index = () => {
               <Button
                 size="sm"
                 onClick={() => (window.location.href = "/signup")}
-                className="relative overflow-hidden bg-white text-black hover:bg-white/90 transition-all duration-300"
+                className="relative overflow-hidden bg-gradient-to-r from-blue-500 to-purple-600 text-white hover:text-white transition-all duration-300 border-0"
               >
                 <motion.div
-                  className="absolute inset-0 bg-gradient-to-r from-blue-400 to-purple-500"
+                  className="absolute inset-0 bg-white"
                   initial={{ x: "100%" }}
                   animate={{ x: isHoveringHeader ? "0%" : "100%" }}
                   transition={{ duration: 0.3 }}
                 />
-                <span className="relative z-10">Get Started</span>
+                <motion.span
+                  className="relative z-10"
+                  animate={{
+                    color: isHoveringHeader ? "#000000" : "#ffffff",
+                  }}
+                  transition={{ duration: 0.3 }}
+                >
+                  Get Started
+                </motion.span>
               </Button>
             </motion.div>
           </div>
@@ -278,16 +286,22 @@ const Index = () => {
               >
                 <Button
                   size="lg"
-                  className="h-14 px-8 text-lg bg-white text-black hover:bg-white/90 transition-all duration-300 relative overflow-hidden"
+                  className="h-14 px-8 text-lg bg-gradient-to-r from-blue-500 to-purple-600 text-white hover:text-white transition-all duration-300 relative overflow-hidden border-0"
                   onClick={() => (window.location.href = "/signup")}
                 >
                   <motion.div
-                    className="absolute inset-0 bg-gradient-to-r from-blue-500 to-purple-600"
+                    className="absolute inset-0 bg-white"
                     initial={{ x: "100%" }}
                     animate={{ x: isHoveringPrimary ? "0%" : "100%" }}
                     transition={{ duration: 0.3 }}
                   />
-                  <span className="relative z-10 flex items-center">
+                  <motion.span
+                    className="relative z-10 flex items-center"
+                    animate={{
+                      color: isHoveringPrimary ? "#000000" : "#ffffff",
+                    }}
+                    transition={{ duration: 0.3 }}
+                  >
                     Start Your Free Trial
                     <motion.div
                       animate={{ x: isHoveringPrimary ? 5 : 0 }}
@@ -295,7 +309,7 @@ const Index = () => {
                     >
                       <ArrowRight className="ml-2 h-5 w-5" />
                     </motion.div>
-                  </span>
+                  </motion.span>
                 </Button>
               </motion.div>
 
@@ -626,16 +640,22 @@ const Index = () => {
               >
                 <Button
                   size="lg"
-                  className="h-14 px-8 text-lg bg-white text-black hover:bg-white/90 transition-all duration-300 relative overflow-hidden"
+                  className="h-14 px-8 text-lg bg-gradient-to-r from-blue-500 to-purple-600 text-white hover:text-white transition-all duration-300 relative overflow-hidden border-0"
                   onClick={() => (window.location.href = "/signup")}
                 >
                   <motion.div
-                    className="absolute inset-0 bg-gradient-to-r from-blue-500 to-purple-600"
+                    className="absolute inset-0 bg-white"
                     initial={{ x: "100%" }}
                     animate={{ x: isHoveringPrimary ? "0%" : "100%" }}
                     transition={{ duration: 0.3 }}
                   />
-                  <span className="relative z-10 flex items-center">
+                  <motion.span
+                    className="relative z-10 flex items-center"
+                    animate={{
+                      color: isHoveringPrimary ? "#000000" : "#ffffff",
+                    }}
+                    transition={{ duration: 0.3 }}
+                  >
                     Start Your Free Trial
                     <motion.div
                       animate={{ x: isHoveringPrimary ? 5 : 0 }}
@@ -643,7 +663,7 @@ const Index = () => {
                     >
                       <ArrowRight className="ml-2 h-5 w-5" />
                     </motion.div>
-                  </span>
+                  </motion.span>
                 </Button>
               </motion.div>
               <motion.div
