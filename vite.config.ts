@@ -16,6 +16,6 @@ export default defineConfig(({ mode }) => ({
   },
   define: {
     global: 'globalThis',
-    process: {},
+    process: { env: {} },
   },
 }));
