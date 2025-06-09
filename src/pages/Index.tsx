@@ -38,10 +38,18 @@ import {
   Sparkles,
   Play,
 } from "lucide-react";
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+// Register GSAP plugins
+gsap.registerPlugin(ScrollTrigger);
 
 const Index = () => {
   const containerRef = useRef<HTMLDivElement>(null);
+  const featuresRef = useRef<HTMLDivElement>(null);
+  const featureCardsRef = useRef<HTMLDivElement[]>([]);
+
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start start", "end end"],
@@ -60,6 +68,153 @@ const Index = () => {
   const [isHoveringPrimary, setIsHoveringPrimary] = useState(false);
   const [isHoveringSecondary, setIsHoveringSecondary] = useState(false);
   const [isHoveringHeader, setIsHoveringHeader] = useState(false);
+
+  // GSAP animations for feature cards
+  useEffect(() => {
+    // Clean up function to clear ScrollTrigger instances
+    return () => {
+      ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
+    };
+  }, []);
+
+  useEffect(() => {
+    if (featureCardsRef.current.length > 0) {
+      // Initial state - cards start from below and invisible
+      gsap.set(featureCardsRef.current, {
+        y: 100,
+        opacity: 0,
+        rotation: 5,
+        scale: 0.8,
+      });
+
+      // Animate cards in sequence when they come into view
+      featureCardsRef.current.forEach((card, index) => {
+        if (card) {
+          gsap.to(card, {
+            y: 0,
+            opacity: 1,
+            rotation: 0,
+            scale: 1,
+            duration: 1.2,
+            delay: index * 0.15,
+            ease: "back.out(1.7)",
+            scrollTrigger: {
+              trigger: card,
+              start: "top 85%",
+              end: "bottom 20%",
+              toggleActions: "play none none reverse",
+            },
+          });
+
+          // Enhanced hover animations
+          const cardElements = {
+            card: card,
+            icon: card.querySelector(".feature-icon"),
+            title: card.querySelector(".feature-title"),
+            description: card.querySelector(".feature-description"),
+            background: card.querySelector(".feature-background"),
+          };
+
+          if (cardElements.card) {
+            cardElements.card.addEventListener("mouseenter", () => {
+              gsap.to(cardElements.card, {
+                y: -20,
+                scale: 1.05,
+                rotationY: 10,
+                duration: 0.4,
+                ease: "power2.out",
+              });
+
+              if (cardElements.icon) {
+                gsap.to(cardElements.icon, {
+                  rotation: 360,
+                  scale: 1.2,
+                  duration: 0.6,
+                  ease: "back.out(1.7)",
+                });
+              }
+
+              if (cardElements.background) {
+                gsap.to(cardElements.background, {
+                  opacity: 1,
+                  scale: 1.1,
+                  duration: 0.4,
+                  ease: "power2.out",
+                });
+              }
+
+              if (cardElements.title) {
+                gsap.to(cardElements.title, {
+                  color: "#60a5fa",
+                  duration: 0.3,
+                  ease: "power2.out",
+                });
+              }
+
+              if (cardElements.description) {
+                gsap.to(cardElements.description, {
+                  color: "rgba(255, 255, 255, 0.9)",
+                  duration: 0.3,
+                  ease: "power2.out",
+                });
+              }
+            });
+
+            cardElements.card.addEventListener("mouseleave", () => {
+              gsap.to(cardElements.card, {
+                y: 0,
+                scale: 1,
+                rotationY: 0,
+                duration: 0.4,
+                ease: "power2.out",
+              });
+
+              if (cardElements.icon) {
+                gsap.to(cardElements.icon, {
+                  rotation: 0,
+                  scale: 1,
+                  duration: 0.4,
+                  ease: "power2.out",
+                });
+              }
+
+              if (cardElements.background) {
+                gsap.to(cardElements.background, {
+                  opacity: 0,
+                  scale: 1,
+                  duration: 0.4,
+                  ease: "power2.out",
+                });
+              }
+
+              if (cardElements.title) {
+                gsap.to(cardElements.title, {
+                  color: "#ffffff",
+                  duration: 0.3,
+                  ease: "power2.out",
+                });
+              }
+
+              if (cardElements.description) {
+                gsap.to(cardElements.description, {
+                  color: "rgba(255, 255, 255, 0.6)",
+                  duration: 0.3,
+                  ease: "power2.out",
+                });
+              }
+            });
+          }
+        }
+      });
+    }
+  }, []);
+
+  // Helper function to add card refs
+  const addToRefs = (el: HTMLDivElement | null) => {
+    if (el && !featureCardsRef.current.includes(el)) {
+      featureCardsRef.current.push(el);
+    }
+  };
 
   // Cursor.com style floating animation
   const mouseX = useMotionValue(0);
@@ -422,7 +577,7 @@ const Index = () => {
             </p>
           </motion.div>
 
-          <div className="mx-auto max-w-7xl">
+          <div className="mx-auto max-w-7xl" ref={featuresRef}>
             <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
               {[
                 {
@@ -462,43 +617,44 @@ const Index = () => {
                     "AI-powered suggestions for optimal agent selection, workflow improvements, and tool recommendations.",
                 },
               ].map((feature, index) => (
-                <motion.div
+                <div
                   key={feature.title}
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6, delay: index * 0.1 }}
-                  viewport={{ once: true }}
-                  whileHover={{
-                    y: -10,
-                    rotateY: 5,
-                    transition: { duration: 0.2 },
-                  }}
-                  className="group"
+                  ref={addToRefs}
+                  className="group relative"
+                  style={{ perspective: "1000px" }}
                 >
-                  <Card className="h-full border border-white/10 bg-white/5 backdrop-blur-sm hover:bg-white/10 transition-all duration-300 hover:border-white/20">
-                    <CardHeader>
+                  {/* Animated background gradient */}
+                  <div
+                    className="feature-background absolute inset-0 bg-gradient-to-br from-blue-500/20 via-purple-500/20 to-pink-500/20 rounded-xl opacity-0 blur-sm"
+                    style={{ transform: "scale(0.9)" }}
+                  />
+
+                  <Card className="h-full border border-white/10 bg-white/5 backdrop-blur-sm transition-all duration-300 relative overflow-hidden rounded-xl">
+                    {/* Subtle glow effect */}
+                    <div className="absolute inset-0 bg-gradient-to-br from-white/5 via-transparent to-transparent opacity-50" />
+
+                    <CardHeader className="relative z-10">
                       <div className="flex items-center space-x-3 mb-4">
-                        <motion.div
-                          className="flex h-12 w-12 items-center justify-center rounded-xl bg-white/10 border border-white/20"
-                          whileHover={{
-                            scale: 1.1,
-                            rotate: 360,
-                            backgroundColor: "rgba(96, 165, 250, 0.2)",
-                          }}
-                          transition={{ duration: 0.6 }}
-                        >
-                          <feature.icon className="h-6 w-6 text-white group-hover:text-blue-400 transition-colors" />
-                        </motion.div>
-                        <CardTitle className="text-xl text-white group-hover:text-blue-400 transition-colors">
+                        <div className="feature-icon flex h-12 w-12 items-center justify-center rounded-xl bg-white/10 border border-white/20 relative overflow-hidden">
+                          {/* Icon background effect */}
+                          <div className="absolute inset-0 bg-gradient-to-br from-blue-400/20 to-purple-600/20 opacity-0 transition-opacity duration-300" />
+                          <feature.icon className="h-6 w-6 text-white relative z-10" />
+                        </div>
+                        <CardTitle className="feature-title text-xl text-white transition-colors duration-300">
                           {feature.title}
                         </CardTitle>
                       </div>
-                      <CardDescription className="text-base leading-relaxed text-white/60 group-hover:text-white/80 transition-colors">
+                      <CardDescription className="feature-description text-base leading-relaxed text-white/60 transition-colors duration-300">
                         {feature.description}
                       </CardDescription>
                     </CardHeader>
+
+                    {/* Animated border gradient */}
+                    <div className="absolute inset-0 rounded-xl opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+                      <div className="absolute inset-0 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 rounded-xl blur-sm opacity-30" />
+                    </div>
                   </Card>
-                </motion.div>
+                </div>
               ))}
             </div>
           </div>
