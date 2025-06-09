@@ -227,20 +227,16 @@ const Index = () => {
     const ctx = gsap.context(() => {
       // Enhanced floating navigation animation
       if (navRef.current) {
-        // Background and blur changes on scroll for light mode
+        // Continuous floating
         gsap.to(navRef.current, {
-          backgroundColor: "rgba(255, 255, 255, 0.95)",
-          borderColor: "rgba(0, 0, 0, 0.15)",
-          backdropFilter: "blur(40px)",
-          scrollTrigger: {
-            trigger: containerRef.current,
-            start: "100px top",
-            end: "300px top",
-            scrub: 1,
-          },
+          y: "+=5",
+          duration: 3,
+          ease: "sine.inOut",
+          repeat: -1,
+          yoyo: true,
         });
 
-        // Dynamic floating movement
+        // Dynamic floating movement with scroll
         gsap.to(navRef.current, {
           y: -15,
           scale: 0.96,
@@ -258,26 +254,6 @@ const Index = () => {
                 rotationX: 2 + Math.sin(progress * Math.PI * 2) * 1,
               });
             },
-          },
-        });
-
-        // Continuous floating
-        gsap.to(navRef.current, {
-          y: "+=5",
-          duration: 3,
-          ease: "sine.inOut",
-          repeat: -1,
-          yoyo: true,
-        });
-
-        // Shadow for light mode
-        gsap.to(navRef.current, {
-          boxShadow: "rgba(0, 0, 0, 0.1) 0px 25px 50px -12px",
-          scrollTrigger: {
-            trigger: containerRef.current,
-            start: "200px top",
-            end: "400px top",
-            scrub: 1,
           },
         });
       }
@@ -441,13 +417,13 @@ const Index = () => {
 
       <div
         ref={containerRef}
-        className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 dark:bg-black text-gray-900 dark:text-white overflow-hidden relative"
+        className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 dark:bg-gradient-to-br dark:from-gray-950 dark:via-gray-900 dark:to-black text-gray-900 dark:text-gray-100 overflow-hidden relative"
         style={{ perspective: "1000px" }}
       >
         {/* Morphing Background */}
         <div
           ref={morphingBgRef}
-          className="fixed inset-0 -z-10 opacity-30 dark:opacity-10"
+          className="fixed inset-0 -z-10 opacity-30 dark:opacity-20"
         >
           <div className="absolute inset-0 bg-gradient-to-br from-blue-200/60 via-purple-200/60 to-pink-200/60 dark:from-blue-500/20 dark:via-purple-500/20 dark:to-pink-500/20" />
           <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-gradient-radial from-blue-300/70 to-transparent dark:from-blue-500/30 dark:to-transparent rounded-full blur-3xl parallax-slow" />
@@ -457,7 +433,7 @@ const Index = () => {
         {/* Enhanced Floating Navigation */}
         <nav
           ref={navRef}
-          className="fixed top-6 left-6 right-6 z-50 backdrop-blur-2xl bg-white/80 border border-gray-300/60 rounded-2xl shadow-xl transition-all duration-500"
+          className="fixed top-6 left-6 right-6 z-50 backdrop-blur-2xl bg-white/80 dark:bg-gray-900/80 border border-gray-300/60 dark:border-gray-700/60 rounded-2xl shadow-xl dark:shadow-2xl transition-all duration-500"
           style={{
             willChange: "transform, background-color, border-color, box-shadow",
             transformStyle: "preserve-3d",
@@ -468,7 +444,7 @@ const Index = () => {
               <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center">
                 <Network className="w-6 h-6 text-white" />
               </div>
-              <span className="font-bold text-2xl text-gray-900 dark:text-white">
+              <span className="font-bold text-2xl text-gray-900 dark:text-gray-100">
                 CrewHub
               </span>
             </div>
@@ -478,7 +454,7 @@ const Index = () => {
                 <a
                   key={item}
                   href={`/${item.toLowerCase()}`}
-                  className="relative text-gray-700 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white transition-all duration-300 group"
+                  className="relative text-gray-700 hover:text-gray-900 dark:text-gray-300 dark:hover:text-gray-100 transition-all duration-300 group"
                   data-magnetic
                 >
                   {item}
@@ -492,7 +468,7 @@ const Index = () => {
               <Button
                 variant="ghost"
                 size="lg"
-                className="text-gray-700 hover:text-gray-900 hover:bg-gray-100/80 dark:text-gray-300 dark:hover:text-white dark:hover:bg-white/10 text-lg"
+                className="text-gray-700 hover:text-gray-900 hover:bg-gray-100/80 dark:text-gray-300 dark:hover:text-gray-100 dark:hover:bg-gray-800/50 text-lg"
                 data-magnetic
                 onClick={() => (window.location.href = "/signin")}
               >
@@ -517,14 +493,14 @@ const Index = () => {
           style={{ transformStyle: "preserve-3d" }}
         >
           <div className="container relative z-10 text-center max-w-6xl">
-            <Badge className="mb-8 bg-white/90 dark:bg-gray-800/90 border-gray-300 dark:border-gray-600 text-gray-800 dark:text-gray-200 backdrop-blur-sm text-lg px-6 py-3 rounded-full shadow-lg animate-pulse">
+            <Badge className="mb-8 bg-white/90 dark:bg-gray-800/90 border border-gray-300 dark:border-gray-600 text-gray-800 dark:text-gray-200 backdrop-blur-sm text-lg px-6 py-3 rounded-full shadow-lg animate-pulse">
               <Bot className="w-5 h-5 mr-2" />
               AI Agent & MCP Management Platform
             </Badge>
 
             <h1
               ref={titleRef}
-              className="text-7xl md:text-9xl font-black mb-8 leading-tight text-gray-900 dark:text-white"
+              className="text-7xl md:text-9xl font-black mb-8 leading-tight text-gray-900 dark:text-gray-100"
               style={{
                 background:
                   "linear-gradient(45deg, #1f2937, #3b82f6, #8b5cf6, #1f2937)",
@@ -562,7 +538,7 @@ const Index = () => {
               <Button
                 variant="outline"
                 size="lg"
-                className="cta-button h-16 px-12 text-xl border-2 border-gray-600 dark:border-gray-400 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-white hover:border-gray-700 dark:hover:border-gray-300 rounded-2xl backdrop-blur-sm transition-all duration-300"
+                className="cta-button h-16 px-12 text-xl border-2 border-gray-600 dark:border-gray-400 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-gray-100 hover:border-gray-700 dark:hover:border-gray-300 rounded-2xl backdrop-blur-sm transition-all duration-300"
                 data-magnetic
                 onClick={() => (window.location.href = "/demo")}
               >
@@ -592,7 +568,7 @@ const Index = () => {
             {[...Array(50)].map((_, i) => (
               <div
                 key={i}
-                className="absolute w-1 h-1 bg-gray-500/80 rounded-full animate-pulse"
+                className="absolute w-1 h-1 bg-gray-500/60 dark:bg-gray-400/40 rounded-full animate-pulse"
                 style={{
                   left: `${Math.random() * 100}%`,
                   top: `${Math.random() * 100}%`,
@@ -615,11 +591,11 @@ const Index = () => {
                 { label: "Teams Collaborating", value: 500, suffix: "+" },
               ].map((stat, index) => (
                 <div key={stat.label} className="text-center group">
-                  <div className="text-6xl font-black text-gray-900 dark:text-white mb-4 font-mono">
+                  <div className="text-6xl font-black text-gray-900 dark:text-gray-100 mb-4 font-mono">
                     <span data-count={stat.value}>0</span>
                     <span>{stat.suffix}</span>
                   </div>
-                  <div className="text-xl text-gray-700 dark:text-gray-300 group-hover:text-gray-900 dark:group-hover:text-white transition-colors">
+                  <div className="text-xl text-gray-700 dark:text-gray-300 group-hover:text-gray-900 dark:group-hover:text-gray-100 transition-colors">
                     {stat.label}
                   </div>
                 </div>
@@ -632,7 +608,7 @@ const Index = () => {
         <section ref={featuresRef} className="py-32 relative">
           <div className="container">
             <div className="text-center mb-20">
-              <h2 className="text-6xl font-black mb-8 text-gray-900 dark:text-white">
+              <h2 className="text-6xl font-black mb-8 text-gray-900 dark:text-gray-100">
                 Everything You Need to Manage AI Teams
               </h2>
               <p className="text-2xl text-gray-700 dark:text-gray-300 max-w-4xl mx-auto">
@@ -708,11 +684,11 @@ const Index = () => {
                         </div>
                       </div>
 
-                      <CardTitle className="text-2xl font-bold text-gray-900 dark:text-white mb-4 group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:from-blue-600 group-hover:to-purple-600 group-hover:bg-clip-text transition-all duration-300">
+                      <CardTitle className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-4 group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:from-blue-600 group-hover:to-purple-600 group-hover:bg-clip-text transition-all duration-300">
                         {feature.title}
                       </CardTitle>
 
-                      <CardDescription className="text-lg text-gray-700 dark:text-gray-300 leading-relaxed group-hover:text-gray-900 dark:group-hover:text-white transition-colors duration-300">
+                      <CardDescription className="text-lg text-gray-700 dark:text-gray-300 leading-relaxed group-hover:text-gray-900 dark:group-hover:text-gray-100 transition-colors duration-300">
                         {feature.description}
                       </CardDescription>
                     </CardHeader>
@@ -724,10 +700,10 @@ const Index = () => {
         </section>
 
         {/* Target Users Section */}
-        <section className="py-32 relative bg-gray-50 dark:bg-gray-900">
+        <section className="py-32 relative bg-gray-50 dark:bg-gray-900/50">
           <div className="container">
             <div className="text-center mb-20">
-              <h2 className="text-6xl font-black mb-8 text-gray-900 dark:text-white">
+              <h2 className="text-6xl font-black mb-8 text-gray-900 dark:text-gray-100">
                 Built for Teams That Build Tomorrow
               </h2>
               <p className="text-2xl text-gray-700 dark:text-gray-300 max-w-4xl mx-auto">
@@ -784,11 +760,11 @@ const Index = () => {
                         </div>
                       </div>
 
-                      <CardTitle className="text-2xl font-bold text-gray-900 dark:text-white mb-4 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+                      <CardTitle className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-4 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
                         {user.title}
                       </CardTitle>
 
-                      <CardDescription className="text-lg text-gray-700 dark:text-gray-300 mb-6 group-hover:text-gray-900 dark:group-hover:text-white transition-colors">
+                      <CardDescription className="text-lg text-gray-700 dark:text-gray-300 mb-6 group-hover:text-gray-900 dark:group-hover:text-gray-100 transition-colors">
                         {user.description}
                       </CardDescription>
                     </CardHeader>
@@ -798,7 +774,7 @@ const Index = () => {
                         {user.features.map((feature, i) => (
                           <li key={i} className="flex items-center gap-3">
                             <CheckCircle className="h-5 w-5 text-green-500 flex-shrink-0" />
-                            <span className="text-gray-700 dark:text-gray-300 group-hover:text-gray-900 dark:group-hover:text-white transition-colors">
+                            <span className="text-gray-700 dark:text-gray-300 group-hover:text-gray-900 dark:group-hover:text-gray-100 transition-colors">
                               {feature}
                             </span>
                           </li>
@@ -815,7 +791,7 @@ const Index = () => {
         {/* CTA Section */}
         <section className="py-32 relative">
           <div className="container text-center">
-            <h2 className="text-6xl font-black mb-8 text-gray-900 dark:text-white">
+            <h2 className="text-6xl font-black mb-8 text-gray-900 dark:text-gray-100">
               Ready to Orchestrate AI Excellence?
             </h2>
             <p className="text-2xl text-gray-700 dark:text-gray-300 mb-16 max-w-3xl mx-auto">
@@ -839,7 +815,7 @@ const Index = () => {
               <Button
                 variant="outline"
                 size="lg"
-                className="h-20 px-16 text-2xl border-2 border-gray-600 dark:border-gray-400 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-white hover:border-gray-700 dark:hover:border-gray-300 rounded-3xl backdrop-blur-sm transition-all duration-300"
+                className="h-20 px-16 text-2xl border-2 border-gray-600 dark:border-gray-400 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-gray-100 hover:border-gray-700 dark:hover:border-gray-300 rounded-3xl backdrop-blur-sm transition-all duration-300"
                 data-magnetic
                 onClick={() => (window.location.href = "/contact")}
               >
@@ -866,7 +842,7 @@ const Index = () => {
                   <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center">
                     <Network className="w-6 h-6 text-white" />
                   </div>
-                  <span className="font-bold text-2xl text-gray-900 dark:text-white">
+                  <span className="font-bold text-2xl text-gray-900 dark:text-gray-100">
                     CrewHub
                   </span>
                 </div>
@@ -901,7 +877,7 @@ const Index = () => {
                 },
               ].map((section) => (
                 <div key={section.title}>
-                  <h3 className="font-bold mb-6 text-lg text-gray-900 dark:text-white">
+                  <h3 className="font-bold mb-6 text-lg text-gray-900 dark:text-gray-100">
                     {section.title}
                   </h3>
                   <ul className="space-y-4">
@@ -909,7 +885,7 @@ const Index = () => {
                       <li key={link}>
                         <a
                           href={`/${link.toLowerCase().replace(" ", "-")}`}
-                          className="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors duration-300"
+                          className="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100 transition-colors duration-300"
                         >
                           {link}
                         </a>
