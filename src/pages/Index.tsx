@@ -78,6 +78,29 @@ const Index = () => {
   }, []);
 
   useEffect(() => {
+    // Animate the features section header
+    if (featuresRef.current) {
+      const header = featuresRef.current.querySelector(".features-header");
+      if (header) {
+        gsap.fromTo(
+          header,
+          { opacity: 0, y: 50 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.8,
+            ease: "power2.out",
+            scrollTrigger: {
+              trigger: header,
+              start: "top 80%",
+              end: "bottom 20%",
+              toggleActions: "play none none reverse",
+            },
+          },
+        );
+      }
+    }
+
     if (featureCardsRef.current.length > 0) {
       // Initial state - cards start from below and invisible
       gsap.set(featureCardsRef.current, {
@@ -554,19 +577,13 @@ const Index = () => {
         </div>
       </motion.section>
 
-      {/* Features Section with Staggered Animation */}
+      {/* Features Section with GSAP Animation */}
       <section
         id="features"
         className="py-32 bg-gradient-to-b from-black to-gray-900"
       >
         <div className="container">
-          <motion.div
-            className="mx-auto max-w-2xl text-center mb-20"
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
-          >
+          <div className="features-header mx-auto max-w-2xl text-center mb-20">
             <h2 className="text-4xl font-bold tracking-tight sm:text-5xl mb-6 text-white">
               Everything you need to manage AI agents
             </h2>
@@ -575,7 +592,7 @@ const Index = () => {
               provides all the tools you need to harness the power of AI
               collaboration.
             </p>
-          </motion.div>
+          </div>
 
           <div className="mx-auto max-w-7xl" ref={featuresRef}>
             <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
